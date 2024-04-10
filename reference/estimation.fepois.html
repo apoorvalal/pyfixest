@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.550">
+<meta name="generator" content="quarto-1.4.553">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -357,15 +357,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p><code>estimation.fepois(fml, data, vcov=None, ssc=ssc(), fixef_rm='none', iwls_tol=1e-08, iwls_maxiter=25, collin_tol=1e-10, drop_intercept=False, i_ref1=None, i_ref2=None)</code></p>
+<p><code>estimation.fepois(fml, data, vcov=None, ssc=ssc(), fixef_rm='none', fixef_tol=1e-08, iwls_tol=1e-08, iwls_maxiter=25, collin_tol=1e-10, drop_intercept=False, i_ref1=None, copy_data=True, store_data=True)</code></p>
 <p>Estimate Poisson regression model with fixed effects using the <code>ppmlhdfe</code> algorithm.</p>
 <section id="parameters" class="level2">
 <h2 class="anchored" data-anchor-id="parameters">Parameters</h2>
 <table class="table">
 <colgroup>
 <col style="width: 3%">
-<col style="width: 9%">
-<col style="width: 84%">
+<col style="width: 7%">
+<col style="width: 86%">
 <col style="width: 2%">
 </colgroup>
 <thead>
@@ -408,40 +408,52 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td><code>'none'</code></td>
 </tr>
 <tr class="even">
+<td><code>fixef_tol</code></td>
+<td>float</td>
+<td>Tolerance for the fixed effects demeaning algorithm. Defaults to 1e-08.</td>
+<td><code>1e-08</code></td>
+</tr>
+<tr class="odd">
 <td><code>iwls_tol</code></td>
 <td>typing.Optional[float]</td>
 <td>Tolerance for IWLS convergence, by default 1e-08.</td>
 <td><code>1e-08</code></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>iwls_maxiter</code></td>
 <td>typing.Optional[float]</td>
 <td>Maximum number of iterations for IWLS convergence, by default 25.</td>
 <td><code>25</code></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>collin_tol</code></td>
 <td>float</td>
 <td>Tolerance for collinearity check, by default 1e-10.</td>
 <td><code>1e-10</code></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>drop_intercept</code></td>
 <td>bool</td>
 <td>Whether to drop the intercept from the model, by default False.</td>
 <td><code>False</code></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>i_ref1</code></td>
-<td>typing.Optional[typing.Union[list, str]]</td>
-<td>Reference category for the first set of categorical variables interacted via “i()”, by default None.</td>
+<td></td>
+<td>Deprecated with pyfixest version 0.18.0. Please use i-syntax instead, i.e.&nbsp;fepois(‘Y~ i(f1, ref=1)’, data = data) instead of the former fepois(‘Y~ i(f1)’, data = data, i_ref=1).</td>
 <td><code>None</code></td>
 </tr>
+<tr class="even">
+<td><code>copy_data</code></td>
+<td>bool</td>
+<td>Whether to copy the data before estimation, by default True. If set to False, the data is not copied, which can save memory but may lead to unintended changes in the input data outside of <code>fepois</code>. For example, the input data set is re-index within the function. As far as I know, the only other relevant case is when using interacted fixed effects, in which case you’ll find a column with interacted fixed effects in the data set.</td>
+<td><code>True</code></td>
+</tr>
 <tr class="odd">
-<td><code>i_ref2</code></td>
-<td>typing.Optional[typing.Union[list, str]]</td>
-<td>Reference category for the second set of categorical variables interacted via “i()”, by default None.</td>
-<td><code>None</code></td>
+<td><code>store_data</code></td>
+<td>bool</td>
+<td>Whether to store the data in the model object, by default True. If set to False, the data is not stored in the model object, which can improve performance and save memory. However, it will no longer be possible to access the data via the <code>data</code> attribute of the model object. This has impact on post-estimation capabilities that rely on the data, e.g.&nbsp;<code>predict()</code> or <code>vcov()</code>.</td>
+<td><code>True</code></td>
 </tr>
 </tbody>
 </table>
@@ -470,7 +482,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="examples" class="level2">
 <h2 class="anchored" data-anchor-id="examples">Examples</h2>
 <p>The <code>fepois()</code> function can be used to estimate a simple Poisson regression model with fixed effects. The following example regresses <code>Y</code> on <code>X1</code> and <code>X2</code> with fixed effects for <code>f1</code> and <code>f2</code>: fixed effects are specified after the <code>|</code> symbol.</p>
-<div id="5898fe88" class="cell" data-execution_count="1">
+<div id="43e6a114" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pyfixest <span class="im">as</span> pf</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> pf.get_data(model <span class="op">=</span> <span class="st">"Fepois"</span>)</span>
@@ -478,7 +490,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>fit.summary()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 
-            <div id="vW1Cbz"></div>
+            <div id="0s11dS"></div>
             <script type="text/javascript" data-lets-plot-script="library">
                 if(!window.letsPlotCallQueue) {
                     window.letsPlotCallQueue = [];
@@ -489,7 +501,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                 (function() {
                     var script = document.createElement("script");
                     script.type = "text/javascript";
-                    script.src = "https://cdn.jsdelivr.net/gh/JetBrains/lets-plot@v4.2.0/js-package/distr/lets-plot.min.js";
+                    script.src = "https://cdn.jsdelivr.net/gh/JetBrains/lets-plot@v4.3.0/js-package/distr/lets-plot.min.js";
                     script.onload = function() {
                         window.letsPlotCall = function(f) {f();};
                         window.letsPlotCallQueue.forEach(function(f) {f();});
@@ -502,9 +514,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                         var div = document.createElement("div");
                         div.style.color = 'darkred';
                         div.textContent = 'Error loading Lets-Plot JS';
-                        document.getElementById("vW1Cbz").appendChild(div);
+                        document.getElementById("0s11dS").appendChild(div);
                     };
-                    var e = document.getElementById("vW1Cbz");
+                    var e = document.getElementById("0s11dS");
                     e.appendChild(script);
                 })()
             </script>
@@ -520,10 +532,10 @@ Observations:  997
 
 | Coefficient   |   Estimate |   Std. Error |   t value |   Pr(&gt;|t|) |   2.5% |   97.5% |
 |:--------------|-----------:|-------------:|----------:|-----------:|-------:|--------:|
-| X1            |     -0.008 |        0.035 |    -0.239 |      0.811 | -0.076 |   0.060 |
-| X2            |     -0.015 |        0.010 |    -1.471 |      0.141 | -0.035 |   0.005 |
+| X1            |     -0.007 |        0.035 |    -0.190 |      0.850 | -0.075 |   0.062 |
+| X2            |     -0.015 |        0.010 |    -1.449 |      0.147 | -0.035 |   0.005 |
 ---
-Deviance: 1068.836</code></pre>
+Deviance: 1068.169</code></pre>
 </div>
 </div>
 <p>For more examples, please take a look at the documentation of the <code>feols()</code> function.</p>
@@ -611,6 +623,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
@@ -645,7 +675,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
   const xrefs = window.document.querySelectorAll('a.quarto-xref');

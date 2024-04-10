@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.550">
+<meta name="generator" content="quarto-1.4.553">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -357,16 +357,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p><code>report.coefplot(models, alpha=0.05, figsize=(500, 300), yintercept=0, xintercept=None, rotate_xticks=0, coefficients=None, title=None, coord_flip=True)</code></p>
+<p><code>report.coefplot(models, alpha=0.05, figsize=(500, 300), yintercept=0, xintercept=None, rotate_xticks=0, title=None, coord_flip=True, keep=[], drop=[], exact_match=False)</code></p>
 <p>Plot model coefficients with confidence intervals.</p>
 <section id="parameters" class="level2">
 <h2 class="anchored" data-anchor-id="parameters">Parameters</h2>
 <table class="table">
 <colgroup>
-<col style="width: 13%">
-<col style="width: 12%">
-<col style="width: 62%">
-<col style="width: 11%">
+<col style="width: 3%">
+<col style="width: 8%">
+<col style="width: 85%">
+<col style="width: 2%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -414,22 +414,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td><code>0</code></td>
 </tr>
 <tr class="odd">
-<td><code>coefficients</code></td>
-<td>list</td>
-<td>A list of coefficients to plot. If None, all coefficients are plotted.</td>
-<td><code>None</code></td>
-</tr>
-<tr class="even">
 <td><code>title</code></td>
 <td>str</td>
 <td>The title of the plot.</td>
 <td><code>None</code></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>coord_flip</code></td>
 <td>bool</td>
 <td>Whether to flip the coordinates of the plot. Default is True.</td>
 <td><code>True</code></td>
+</tr>
+<tr class="odd">
+<td><code>keep</code></td>
+<td>typing.Optional[typing.Union[list, str]]</td>
+<td>The pattern for retaining coefficient names. You can pass a string (one pattern) or a list (multiple patterns). Default is keeping all coefficients. You should use regular expressions to select coefficients. “age”, # would keep all coefficients containing age r”^tr”, # would keep all coefficients starting with tr r”\d$“, # would keep all coefficients ending with number Output will be in the order of the patterns.</td>
+<td><code>[]</code></td>
+</tr>
+<tr class="even">
+<td><code>drop</code></td>
+<td>typing.Optional[typing.Union[list, str]]</td>
+<td>The pattern for excluding coefficient names. You can pass a string (one pattern) or a list (multiple patterns). Syntax is the same as for <code>keep</code>. Default is keeping all coefficients. Parameter <code>keep</code> and <code>drop</code> can be used simultaneously.</td>
+<td><code>[]</code></td>
+</tr>
+<tr class="odd">
+<td><code>exact_match</code></td>
+<td>bool</td>
+<td>Whether to use exact match for <code>keep</code> and <code>drop</code>. Default is False. If True, the pattern will be matched exactly to the coefficient name instead of using regular expressions.</td>
+<td><code>False</code></td>
 </tr>
 </tbody>
 </table>
@@ -453,7 +465,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="examples" class="level2">
 <h2 class="anchored" data-anchor-id="examples">Examples</h2>
-<div id="f191f32a" class="cell" data-execution_count="1">
+<div id="e0927031" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pyfixest <span class="im">as</span> pf</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pf.get_data()</span>
@@ -464,7 +476,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>pf.coefplot([fit1, fit2, fit3])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 
-            <div id="aXAfFZ"></div>
+            <div id="2IEUSt"></div>
             <script type="text/javascript" data-lets-plot-script="library">
                 if(!window.letsPlotCallQueue) {
                     window.letsPlotCallQueue = [];
@@ -475,7 +487,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                 (function() {
                     var script = document.createElement("script");
                     script.type = "text/javascript";
-                    script.src = "https://cdn.jsdelivr.net/gh/JetBrains/lets-plot@v4.2.0/js-package/distr/lets-plot.min.js";
+                    script.src = "https://cdn.jsdelivr.net/gh/JetBrains/lets-plot@v4.3.0/js-package/distr/lets-plot.min.js";
                     script.onload = function() {
                         window.letsPlotCall = function(f) {f();};
                         window.letsPlotCallQueue.forEach(function(f) {f();});
@@ -488,25 +500,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                         var div = document.createElement("div");
                         div.style.color = 'darkred';
                         div.textContent = 'Error loading Lets-Plot JS';
-                        document.getElementById("aXAfFZ").appendChild(div);
+                        document.getElementById("2IEUSt").appendChild(div);
                     };
-                    var e = document.getElementById("aXAfFZ");
+                    var e = document.getElementById("2IEUSt");
                     e.appendChild(script);
                 })()
             </script>
             
 </div>
 <div class="cell-output cell-output-display" data-execution_count="1">
-   <div id="S0WAy1"></div>
+   <div id="3nTtyn"></div>
    <script type="text/javascript" data-lets-plot-script="plot">
        (function() {
            var plotSpec={
 "data":{
-"Model":["Y~X1","Y~X1","Y~X1+X2","Y~X1+X2","Y~X1+X2","Y~X1+X2|f1","Y~X1+X2|f1"],
-"Coefficient":["Intercept","X1","Intercept","X1","X2","X1","X2"],
-"Estimate":[0.9185177588356426,-1.000085840074156,0.888779148933936,-0.9929357698186859,-0.17634236659778288,-0.9495255714191589,-0.1742252748945438],
-"2.5%":[0.6990856170653885,-1.1663660739416457,0.67601628367764,-1.1540790755856782,-0.2190548570563819,-1.085581857547282,-0.2118570044389386],
-"97.5%":[1.1379499006058966,-0.8338056062066661,1.101542014190232,-0.8317924640516935,-0.13362987613918387,-0.813469285291036,-0.13659354535014903]
+"Coefficient":["Intercept","Intercept","X1","X1","X1","Intercept","Intercept","X1","X1","X1","X2","X2","X1","X1","X1","X2","X2"],
+"Model":["Y~X1","Y~X1+X2","Y~X1","Y~X1+X2","Y~X1+X2|f1","Y~X1","Y~X1+X2","Y~X1","Y~X1+X2","Y~X1+X2|f1","Y~X1+X2","Y~X1+X2|f1","Y~X1","Y~X1+X2","Y~X1+X2|f1","Y~X1+X2","Y~X1+X2|f1"],
+"Estimate":[0.9185177588356426,0.888779148933936,-1.000085840074156,-0.9929357698186859,-0.9495255714191589,0.9185177588356426,0.888779148933936,-1.000085840074156,-0.9929357698186859,-0.9495255714191589,-0.17634236659778288,-0.1742252748945438,-1.000085840074156,-0.9929357698186859,-0.9495255714191589,-0.17634236659778288,-0.1742252748945438],
+"2.5%":[0.6990856170653885,0.67601628367764,-1.1663660739416457,-1.1540790755856782,-1.085581857547282,0.6990856170653885,0.67601628367764,-1.1663660739416457,-1.1540790755856782,-1.085581857547282,-0.2190548570563819,-0.2118570044389386,-1.1663660739416457,-1.1540790755856782,-1.085581857547282,-0.2190548570563819,-0.2118570044389386],
+"97.5%":[1.1379499006058966,1.101542014190232,-0.8338056062066661,-0.8317924640516935,-0.813469285291036,1.1379499006058966,1.101542014190232,-0.8338056062066661,-0.8317924640516935,-0.813469285291036,-0.13362987613918387,-0.13659354535014903,-0.8338056062066661,-0.8317924640516935,-0.813469285291036,-0.13362987613918387,-0.13659354535014903]
 },
 "mapping":{
 "x":"Coefficient",
@@ -575,11 +587,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }],
 "metainfo_list":[]
 };
-           var plotContainer = document.getElementById("S0WAy1");
+           var plotContainer = document.getElementById("3nTtyn");
            window.letsPlotCall(function() {{
                LetsPlot.buildPlotFromProcessedSpecs(plotSpec, -1, -1, plotContainer);
            }});
-       })();    
+       })();
    </script>
 </div>
 </div>
@@ -667,6 +679,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
@@ -701,7 +731,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
   const xrefs = window.document.querySelectorAll('a.quarto-xref');
