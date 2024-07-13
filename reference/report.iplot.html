@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.555">
+<meta name="generator" content="quarto-1.5.54">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -33,7 +33,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -114,7 +114,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
             <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -134,6 +134,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li class="nav-item">
     <a class="nav-link" href="../replicating-the-effect.html"> 
 <span class="menu-text">Replicating ‘The Effect’ with PyFixest</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../stargazer.html"> 
+<span class="menu-text">Publication-Ready Regression Tables with <code>Stargazer</code></span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../marginaleffects.html"> 
+<span class="menu-text">Hypothesis testing and Marginal Effects with <code>py-marginaleffects</code></span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link active" href="../reference/index.html" aria-current="page"> 
@@ -156,17 +164,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
-          <div class="quarto-navbar-tools">
+            <div class="quarto-navbar-tools">
 </div>
       </div> <!-- /container-fluid -->
     </nav>
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
         <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../reference/report.summary.html">Summarize and Visualize</a></li><li class="breadcrumb-item"><a href="../reference/report.iplot.html">report.iplot</a></li></ol></nav>
-        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
   </nav>
@@ -185,9 +193,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
  <span class="menu-text">Estimation Functions</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -238,9 +246,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
  <span class="menu-text">Estimation Classes</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -267,9 +275,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
  <span class="menu-text">Summarize and Visualize</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -302,9 +310,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
  <span class="menu-text">Misc / Utilities</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -364,8 +372,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <table class="caption-top table">
 <colgroup>
 <col style="width: 3%">
-<col style="width: 8%">
-<col style="width: 85%">
+<col style="width: 6%">
+<col style="width: 87%">
 <col style="width: 2%">
 </colgroup>
 <thead>
@@ -427,13 +435,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="odd">
 <td><code>keep</code></td>
-<td>typing.Optional[typing.Union[list, str]]</td>
+<td>Optional[Union[list, str]]</td>
 <td>The pattern for retaining coefficient names. You can pass a string (one pattern) or a list (multiple patterns). Default is keeping all coefficients. You should use regular expressions to select coefficients. “age”, # would keep all coefficients containing age r”^tr”, # would keep all coefficients starting with tr r”\d$“, # would keep all coefficients ending with number Output will be in the order of the patterns.</td>
 <td><code>None</code></td>
 </tr>
 <tr class="even">
 <td><code>drop</code></td>
-<td>typing.Optional[typing.Union[list, str]]</td>
+<td>Optional[Union[list, str]]</td>
 <td>The pattern for excluding coefficient names. You can pass a string (one pattern) or a list (multiple patterns). Syntax is the same as for <code>keep</code>. Default is keeping all coefficients. Parameter <code>keep</code> and <code>drop</code> can be used simultaneously.</td>
 <td><code>None</code></td>
 </tr>
@@ -471,7 +479,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="examples" class="level2">
 <h2 class="anchored" data-anchor-id="examples">Examples</h2>
-<div id="22542f5b" class="cell" data-execution_count="1">
+<div id="8e01eae5" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pyfixest <span class="im">as</span> pf</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pf.get_data()</span>
@@ -482,7 +490,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>pf.iplot([fit1, fit2, fit3])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 
-            <div id="Vs7lcA"></div>
+            <div id="Sz3HeV"></div>
             <script type="text/javascript" data-lets-plot-script="library">
                 if(!window.letsPlotCallQueue) {
                     window.letsPlotCallQueue = [];
@@ -493,7 +501,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                 (function() {
                     var script = document.createElement("script");
                     script.type = "text/javascript";
-                    script.src = "https://cdn.jsdelivr.net/gh/JetBrains/lets-plot@v4.3.2/js-package/distr/lets-plot.min.js";
+                    script.src = "https://cdn.jsdelivr.net/gh/JetBrains/lets-plot@v4.3.3/js-package/distr/lets-plot.min.js";
                     script.onload = function() {
                         window.letsPlotCall = function(f) {f();};
                         window.letsPlotCallQueue.forEach(function(f) {f();});
@@ -506,9 +514,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                         var div = document.createElement("div");
                         div.style.color = 'darkred';
                         div.textContent = 'Error loading Lets-Plot JS';
-                        document.getElementById("Vs7lcA").appendChild(div);
+                        document.getElementById("Sz3HeV").appendChild(div);
                     };
-                    var e = document.getElementById("Vs7lcA");
+                    var e = document.getElementById("Sz3HeV");
                     e.appendChild(script);
                 })()
             </script>
@@ -516,7 +524,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="cell-output cell-output-display">
 
-            <div id="te66iI"></div>
+            <div id="P6rvE3"></div>
             <script type="text/javascript" data-lets-plot-script="library">
                 if(!window.letsPlotCallQueue) {
                     window.letsPlotCallQueue = [];
@@ -527,7 +535,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                 (function() {
                     var script = document.createElement("script");
                     script.type = "text/javascript";
-                    script.src = "https://cdn.jsdelivr.net/gh/JetBrains/lets-plot@v4.3.2/js-package/distr/lets-plot.min.js";
+                    script.src = "https://cdn.jsdelivr.net/gh/JetBrains/lets-plot@v4.3.3/js-package/distr/lets-plot.min.js";
                     script.onload = function() {
                         window.letsPlotCall = function(f) {f();};
                         window.letsPlotCallQueue.forEach(function(f) {f();});
@@ -540,16 +548,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                         var div = document.createElement("div");
                         div.style.color = 'darkred';
                         div.textContent = 'Error loading Lets-Plot JS';
-                        document.getElementById("te66iI").appendChild(div);
+                        document.getElementById("P6rvE3").appendChild(div);
                     };
-                    var e = document.getElementById("te66iI");
+                    var e = document.getElementById("P6rvE3");
                     e.appendChild(script);
                 })()
             </script>
             
 </div>
 <div class="cell-output cell-output-display" data-execution_count="1">
-   <div id="dvK6zJ"></div>
+   <div id="Scjv2w"></div>
    <script type="text/javascript" data-lets-plot-script="plot">
        (function() {
            var plotSpec={
@@ -557,8 +565,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 "Model":["Y~i(f1)","Y~i(f1)","Y~i(f1)","Y~i(f1)","Y~i(f1)","Y~i(f1)","Y~i(f1)","Y~i(f1)","Y~i(f1)","Y~i(f1)","Y~i(f1)","Y~i(f1)","Y~i(f1)","Y~i(f1)","Y~i(f1)","Y~i(f1)","Y~i(f1)","Y~i(f1)","Y~i(f1)","Y~i(f1)","Y~i(f1)","Y~i(f1)","Y~i(f1)","Y~i(f1)","Y~i(f1)","Y~i(f1)","Y~i(f1)","Y~i(f1)","Y~i(f1)","Y~i(f1)+X2","Y~i(f1)+X2","Y~i(f1)+X2","Y~i(f1)+X2","Y~i(f1)+X2","Y~i(f1)+X2","Y~i(f1)+X2","Y~i(f1)+X2","Y~i(f1)+X2","Y~i(f1)+X2","Y~i(f1)+X2","Y~i(f1)+X2","Y~i(f1)+X2","Y~i(f1)+X2","Y~i(f1)+X2","Y~i(f1)+X2","Y~i(f1)+X2","Y~i(f1)+X2","Y~i(f1)+X2","Y~i(f1)+X2","Y~i(f1)+X2","Y~i(f1)+X2","Y~i(f1)+X2","Y~i(f1)+X2","Y~i(f1)+X2","Y~i(f1)+X2","Y~i(f1)+X2","Y~i(f1)+X2","Y~i(f1)+X2","Y~i(f1)+X2|f2","Y~i(f1)+X2|f2","Y~i(f1)+X2|f2","Y~i(f1)+X2|f2","Y~i(f1)+X2|f2","Y~i(f1)+X2|f2","Y~i(f1)+X2|f2","Y~i(f1)+X2|f2","Y~i(f1)+X2|f2","Y~i(f1)+X2|f2","Y~i(f1)+X2|f2","Y~i(f1)+X2|f2","Y~i(f1)+X2|f2","Y~i(f1)+X2|f2","Y~i(f1)+X2|f2","Y~i(f1)+X2|f2","Y~i(f1)+X2|f2","Y~i(f1)+X2|f2","Y~i(f1)+X2|f2","Y~i(f1)+X2|f2","Y~i(f1)+X2|f2","Y~i(f1)+X2|f2","Y~i(f1)+X2|f2","Y~i(f1)+X2|f2","Y~i(f1)+X2|f2","Y~i(f1)+X2|f2","Y~i(f1)+X2|f2","Y~i(f1)+X2|f2","Y~i(f1)+X2|f2"],
 "Coefficient":["C(f1)[T.1.0]","C(f1)[T.2.0]","C(f1)[T.3.0]","C(f1)[T.4.0]","C(f1)[T.5.0]","C(f1)[T.6.0]","C(f1)[T.7.0]","C(f1)[T.8.0]","C(f1)[T.9.0]","C(f1)[T.10.0]","C(f1)[T.11.0]","C(f1)[T.12.0]","C(f1)[T.13.0]","C(f1)[T.14.0]","C(f1)[T.15.0]","C(f1)[T.16.0]","C(f1)[T.17.0]","C(f1)[T.18.0]","C(f1)[T.19.0]","C(f1)[T.20.0]","C(f1)[T.21.0]","C(f1)[T.22.0]","C(f1)[T.23.0]","C(f1)[T.24.0]","C(f1)[T.25.0]","C(f1)[T.26.0]","C(f1)[T.27.0]","C(f1)[T.28.0]","C(f1)[T.29.0]","C(f1)[T.1.0]","C(f1)[T.2.0]","C(f1)[T.3.0]","C(f1)[T.4.0]","C(f1)[T.5.0]","C(f1)[T.6.0]","C(f1)[T.7.0]","C(f1)[T.8.0]","C(f1)[T.9.0]","C(f1)[T.10.0]","C(f1)[T.11.0]","C(f1)[T.12.0]","C(f1)[T.13.0]","C(f1)[T.14.0]","C(f1)[T.15.0]","C(f1)[T.16.0]","C(f1)[T.17.0]","C(f1)[T.18.0]","C(f1)[T.19.0]","C(f1)[T.20.0]","C(f1)[T.21.0]","C(f1)[T.22.0]","C(f1)[T.23.0]","C(f1)[T.24.0]","C(f1)[T.25.0]","C(f1)[T.26.0]","C(f1)[T.27.0]","C(f1)[T.28.0]","C(f1)[T.29.0]","C(f1)[T.1.0]","C(f1)[T.2.0]","C(f1)[T.3.0]","C(f1)[T.4.0]","C(f1)[T.5.0]","C(f1)[T.6.0]","C(f1)[T.7.0]","C(f1)[T.8.0]","C(f1)[T.9.0]","C(f1)[T.10.0]","C(f1)[T.11.0]","C(f1)[T.12.0]","C(f1)[T.13.0]","C(f1)[T.14.0]","C(f1)[T.15.0]","C(f1)[T.16.0]","C(f1)[T.17.0]","C(f1)[T.18.0]","C(f1)[T.19.0]","C(f1)[T.20.0]","C(f1)[T.21.0]","C(f1)[T.22.0]","C(f1)[T.23.0]","C(f1)[T.24.0]","C(f1)[T.25.0]","C(f1)[T.26.0]","C(f1)[T.27.0]","C(f1)[T.28.0]","C(f1)[T.29.0]"],
 "Estimate":[2.5442879837380556,-1.6346807837677444,-0.4639805415936478,-1.762712219827264,1.4348086119364796,-0.8992225420858184,0.8901916963536634,-0.4708119794251317,0.08392895661938178,0.28878174380848387,1.2881639264088718,0.6873080715508432,1.8043009738995925,-0.21656684189387726,1.390369881952681,2.2404780654367857,-0.3263697830683054,1.6520823541202088,0.5883570616384417,2.7916074868998453,-1.4464082114876389,-1.0659170994410565,-0.5480905346838362,-0.9775601740834312,-1.7019175178822936,1.0750127541094727,-0.48200420903080204,1.5173786526283055,0.2115121440950535,2.5440205540818677,-1.6313072409907552,-0.30486368707801664,-1.8258087634824978,1.296599835024802,-0.8760374775396995,0.6714436818413334,-0.5135342321951362,0.15704200653887454,0.1911356026162839,1.3032446780387081,0.5847361345389889,1.7098143375775965,-0.29933242896174317,1.3980257938012046,2.299378908219579,-0.34924905337212553,1.6419098977441906,0.6653948237381045,2.76730897306777,-1.4967680507219554,-1.0023735868260772,-0.6755145431290932,-0.9750743353345372,-1.6048933207963947,1.047024574269359,-0.5239910055069207,1.4875524761508354,0.2370584786168686,2.3228425155709176,-1.8675285881251862,-0.5753048895683744,-1.9474022906201587,1.285726781815286,-0.9990202459763984,0.40360441679752285,-0.5985576628833761,-0.12022769500859795,0.3173236544749492,1.2446476524449523,0.4152881434737144,1.7926305048307487,-0.4409449678580068,1.0679274701373251,2.0026312010181564,-0.46500639470826494,1.3364027085682253,0.6489881183738672,2.7546408749758666,-1.8670452658534034,-1.1334669347314805,-0.7465956955225844,-1.219168659318826,-1.7082779097770961,0.5485296361077272,-0.5138155960178729,1.238656932452389,0.17248560396530066],
-"2.5%":[1.6988810797044178,-2.521351025022358,-1.3779393065398144,-2.6556933609461773,0.4770952921754976,-1.8291701365228201,-0.00942332074152552,-1.3574822206797454,-0.7967298916533311,-0.5978884974461299,0.3885489093136828,-0.24263952288615864,0.882571045111439,-1.1552192837893143,0.4604222875156794,1.353807824182172,-1.2742601424462932,0.7591012130012955,-0.34159053279856,1.9622034224441058,-2.3393893526065526,-1.9301363487581433,-1.5394180012195635,-1.8771751911786203,-2.70609209657718,0.11729943434849066,-1.4119518034678038,0.667559621130842,-0.7363782152829345,1.731412609047959,-2.483577960169929,-1.1840511099690492,-2.684255856366753,0.3755477466919719,-1.7699205598535628,-0.1945882931924281,-1.3658557164549636,-0.6896008463001844,-0.661401624278498,0.4385254416945509,-0.30941332630136886,0.8236041077029986,-1.2017493868539133,0.5041554924049474,1.4470114108378973,-1.2603781410172086,0.7835705632600218,-0.22863227836667788,1.970065347096058,-2.35517498798062,-1.8331799598559417,-1.6287882070330242,-1.8397874682647792,-2.570341903488536,0.12644703082173891,-1.4179067867165365,0.6706776032707177,-0.6740739903895147,1.6281356166732346,-2.526386103180859,-1.314284774943679,-2.5608105804581704,0.41274196531173546,-1.683307006312361,-0.31909671045836135,-1.4881223539227193,-0.7426171242063252,-0.5303710431947932,0.40594059438730246,-0.27837649523151603,0.9172660486955247,-1.3237694446257722,0.20389891836920404,1.338898336385303,-1.4513402171545602,0.40212957739078603,-0.2878219160803789,2.2039168767986954,-2.5983541698982697,-1.701425595517048,-1.808160201736539,-2.094796744527928,-2.4340548169734344,-0.35908215414039857,-1.4000812338051118,0.45689240197575587,-0.7146301621755742],
-"97.5%":[3.3896948877716935,-0.7480105425131307,0.44997822335251875,-0.8697310787083508,2.3925219316974617,0.03072505235118339,1.7898067134488522,0.4158582618294821,0.9645878048920947,1.1754519850630976,2.187778943504061,1.617255665987845,2.726030902687746,0.7220856000015596,2.3203174763896826,3.1271483066913994,0.6215205763096825,2.545063495239122,1.5183046560754434,3.6210115513555845,-0.5534270703687254,-0.20169785012396968,0.44323693185189117,-0.07794515698824223,-0.6977429391874075,2.032726073870455,0.44794338540619966,2.367197684125769,1.1594025034730415,3.3566284991157764,-0.7790365218115817,0.5743237358130158,-0.9673616705982425,2.217651923357632,0.017845604774163748,1.537475656875095,0.3387872520646914,1.0036848593779335,1.0436728295110658,2.1679639143828653,1.4788855953793467,2.5960245674521945,0.6030845289304271,2.291896095197462,3.1517464056012607,0.5618800342729575,2.5002492322283594,1.559421925842887,3.5645525990394815,-0.6383611134632909,-0.17156721379621276,0.27775912077483766,-0.11036120240429537,-0.6394447381042534,1.967602117716979,0.3699247757026951,2.304427349030953,1.148190947623252,3.0175494144686006,-1.2086710730695132,0.16367499580693012,-1.3339940007821471,2.1587115983188365,-0.3147334856404359,1.126305544053407,0.29100702815596724,0.5021617341891292,1.1650183521446915,2.0833547105026025,1.1089527821789449,2.6679949609659728,0.4418795089097585,1.9319560219054464,2.6663640656510097,0.5213274277380304,2.270675839745665,1.5857981528281133,3.305364873153038,-1.135736361808537,-0.5655082739459131,0.3149688106913703,-0.34354057410972416,-0.9825010025807578,1.456141426355853,0.37245004176936625,2.020421462929022,1.0596013701061755]
+"2.5%":[2.5172669829901935,-1.6630206484385146,-0.4931926054569717,-1.7912537942654128,1.4041980595432744,-0.9289456429084668,0.8614380891454237,-0.4991518440959018,0.05578122883971656,0.26044187913771377,1.2594103192006323,0.6575849707281948,1.774840527129784,-0.24656816813503374,1.3606467811300327,2.2121382007660157,-0.35666637277846563,1.62354077968206,0.5586339608157933,2.765097970903455,-1.4749497859257876,-1.0935393827116278,-0.5797754666223295,-1.0063137812916707,-1.7340130708195087,1.0444022017162675,-0.5117273098534504,1.4902166309129887,0.18121555438489326,2.5180479044065684,-1.658547595891337,-0.33296435613156017,-1.8532465282059665,1.2671610836943887,-0.9046078506076688,0.643763488418882,-0.5407762096538821,0.12998153001846932,0.16388672957165068,1.2756064424906641,0.5561572474561223,1.6814892049230803,-0.3281755625437125,1.3694558292380963,2.2721354600852117,-0.37837064484437394,1.6144755772045896,0.6368198474963678,2.7418273991676223,-1.5242045319876358,-1.0289278963262265,-0.7059831634134206,-1.0027123758047058,-1.6357510769517702,1.017600990386094,-0.5525624236999953,1.4614434465363335,0.20793677906924019,2.3013576752475595,-1.8879047331286063,-0.5981589376059774,-1.966372850983249,1.2587284327027963,-1.0201828280732999,0.38125381347799214,-0.6260687691853337,-0.13947601041539295,0.2911074397644142,1.2187093938080595,0.39383553659131665,1.7655585618363,-0.46824762304540113,1.041206106783923,1.9821042786043601,-0.49551022979959747,1.3075089275022806,0.6200158798146913,2.7376089192232285,-1.889662077425859,-1.1510318979650518,-0.7794261509925685,-1.2462487554330521,-1.7307236361492342,0.5204603965190328,-0.5412246742091954,1.2144797058631522,0.14505023429485042],
+"97.5%":[2.571308984485918,-1.6063409190969742,-0.43476847773032395,-1.7341706453891153,1.4654191643296848,-0.86949944126317,0.918945303561903,-0.4424721147543616,0.112076684399047,0.31712160847925397,1.3169175336171113,0.7170311723734916,1.833761420669401,-0.18656551565272078,1.4200929827753295,2.2688179301075557,-0.29607319335814514,1.6806239285583575,0.6180801624610901,2.8181170028962357,-1.4178666370494901,-1.0382948161704852,-0.5164056027453429,-0.9488065668751916,-1.6698219649450785,1.105623306502678,-0.45228110820815365,1.5445406743436223,0.24180873380521375,2.569993203757167,-1.6040668860901734,-0.2767630180244731,-1.798370998759029,1.3260385863552153,-0.8474671044717302,0.6991238752637848,-0.48629225473639026,0.18410248305927976,0.21838447566091712,1.3308829135867521,0.6133150216218555,1.7381394702321127,-0.27048929537977384,1.426595758364313,2.3266223563539463,-0.3201274618998771,1.6693442182837916,0.6939697999798413,2.7927905469679173,-1.469331569456275,-0.975819277325928,-0.6450459228447658,-0.9474362948643688,-1.5740355646410191,1.0764481581526237,-0.49541958731384605,1.5136615057653373,0.266180178164497,2.3443273558942757,-1.847152443121766,-0.5524508415307715,-1.9284317302570684,1.3127251309277757,-0.9778576638794969,0.42595502011705355,-0.5710465565814185,-0.10097937960180293,0.3435398691854842,1.2705859110818452,0.43674075035611215,1.8197024478251975,-0.41364231267061247,1.0946488334907274,2.0231581234319527,-0.4345025596169324,1.36529648963417,0.677960356933043,2.771672830728505,-1.8444284542809477,-1.1159019714979093,-0.7137652400526003,-1.1920885632045999,-1.685832183404958,0.5765988756964217,-0.4864065178265503,1.2628341590416259,0.1999209736357509]
 },
 "mapping":{
 "x":"Coefficient",
@@ -583,7 +591,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 },
 "kind":"plot",
 "scales":[{
-"name":"Estimate and 95% Confidence Interval",
+"name":"Estimate and 95.0% Confidence Interval",
 "aesthetic":"y"
 }],
 "layers":[{
@@ -616,7 +624,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }],
 "metainfo_list":[]
 };
-           var plotContainer = document.getElementById("dvK6zJ");
+           var plotContainer = document.getElementById("Scjv2w");
            window.letsPlotCall(function() {{
                LetsPlot.buildPlotFromProcessedSpecs(plotSpec, -1, -1, plotContainer);
            }});
@@ -664,18 +672,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -707,7 +704,29 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
       var filterRegex = new RegExp('/' + window.location.host + '/');
@@ -715,7 +734,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {
