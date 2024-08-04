@@ -8,6 +8,7 @@ import numpy as np
 import pandas as pd
 import polars as pl
 from formulaic import Formula
+from joblib import Parallel, delayed
 from scipy.sparse.linalg import lsqr
 from scipy.stats import chi2, f, norm, t
 from tqdm import tqdm
@@ -963,6 +964,7 @@ class Feols:
         seed: Optional[int] = None,
         inplace: bool = False,
         fit_func: Optional[Callable] = None,
+        n_jobs: int = None,
         **kwargs,
     ) -> Union["Feols", np.ndarray]:
         """
@@ -986,6 +988,8 @@ class Feols:
             An option to provide a custom fit function. Defaults to None, in which case the self._method
             attribute is used to determine the fit function. If a custom fit function is provided, it must
             take the same arguments as the `feols` or `fepois` function.
+        n_jobs: int, optional
+            The number of jobs to run in parallel. Defaults to None, which means single-core is used.
         **fit_kwargs : dict, optional
             Additional keyword arguments to pass to the fit function.
 
@@ -1001,25 +1005,21 @@ class Feols:
         _data = pl.DataFrame(self._data)
         _method = self._method
         _k = self._k
-        _fml = self._fml
-
-        rng = np.random.default_rng(seed)
+        _weights_name = self._weights_name
+        _weights_type = self._weights_type
+        _coef = self.coef().to_numpy()
 
         block_bootstrap = _clustervar is not None
 
         if fit_func is None:
             # lazy loading to avoid circular import
             fixest_module = import_module("pyfixest.estimation")
-            if _method == "feols":
-                fit_ = getattr(fixest_module, "feols")
-            else:
-                fit_ = getattr(fixest_module, "fepois")
+            fit_ = getattr(fixest_module, "feols" if _method == "feols" else "fepois")
 
         else:
             # check if data is passed via kwargs - if so,
             # update the data with the passed data
-            _data = kwargs.get("data", _data)
-            _data = pl.DataFrame(_data)
+            _data = pl.DataFrame(kwargs.get("data", _data))
             _fml = kwargs.get("fml", self._fml)
             _N = _data.shape[0]
             fit_ = fit_func
@@ -1031,31 +1031,61 @@ class Feols:
                 for group in set(unique_groups)
             }
 
-        boot_stats = np.zeros((reps, _k))
-
-        for b in tqdm(range(reps)):
+        def single_bootstrap(
+            b,
+            seed,
+            block_bootstrap,
+            _N,
+            unique_groups,
+            grouped_data,
+            _data,
+            _fml,
+            _weights_name,
+            _weights_type,
+            _vcov,
+            _coef,
+        ):
+            b_rng = np.random.default_rng(seed + b if seed is not None else None)
             if block_bootstrap:
-                resampled_groups = rng.choice(
+                resampled_groups = b_rng.choice(
                     unique_groups, size=len(unique_groups), replace=True
                 )
-
                 df_boot = pl.concat(
                     [grouped_data[group] for group in resampled_groups], how="vertical"
                 )
             else:
-                indices = rng.integers(0, _N, _N)
-                df_boot = _data[indices]
+                df_boot = _data.sample(_N, with_replacement=True, seed=b_rng)
 
             fit_resampled = fit_(
                 fml=_fml,
                 data=df_boot,
-                weights=self._weights_name,
-                weights_type=self._weights_type,
+                weights=_weights_name,
+                weights_type=_weights_type,
                 vcov=_vcov,
             )
 
-            boot_stats[b, :] = fit_resampled.coef().to_numpy() - self.coef().to_numpy()
+            return fit_resampled.coef().to_numpy() - _coef
 
+        with Parallel(n_jobs=n_jobs) as parallel:
+            boot_stats = parallel(
+                delayed(single_bootstrap)(
+                    b,
+                    seed,
+                    block_bootstrap,
+                    _N,
+                    unique_groups if block_bootstrap else None,
+                    grouped_data if block_bootstrap else None,
+                    _data,
+                    _fml,
+                    _weights_name,
+                    _weights_type,
+                    _vcov,
+                    _coef,
+                )
+                for b in tqdm(range(reps), desc="Bootstrap Progress")
+            )
+
+        boot_stats = np.array(boot_stats)
         vcov = self._ssc * (np.dot(boot_stats.T, boot_stats) / (reps - 1))
 
         if inplace:
