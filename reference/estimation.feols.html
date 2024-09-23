@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.56">
+<meta name="generator" content="quarto-1.5.57">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -369,16 +369,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p><code>estimation.feols(fml, data, vcov=None, weights=None, ssc=ssc(), fixef_rm='none', fixef_tol=1e-08, collin_tol=1e-10, drop_intercept=False, i_ref1=None, copy_data=True, store_data=True, lean=False, weights_type='aweights')</code></p>
+<p><code>estimation.feols(fml, data, vcov=None, weights=None, ssc=ssc(), fixef_rm='none', fixef_tol=1e-08, collin_tol=1e-10, drop_intercept=False, i_ref1=None, copy_data=True, store_data=True, lean=False, weights_type='aweights', use_compression=False, reps=100, seed=None)</code></p>
 <p>Estimate a linear regression models with fixed effects using fixest formula syntax.</p>
 <section id="parameters" class="level2">
 <h2 class="anchored" data-anchor-id="parameters">Parameters</h2>
 <table class="caption-top table">
 <colgroup>
+<col style="width: 1%">
 <col style="width: 3%">
-<col style="width: 6%">
-<col style="width: 87%">
-<col style="width: 2%">
+<col style="width: 93%">
+<col style="width: 1%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -473,6 +473,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>Options include <code>aweights</code> or <code>fweights</code>. <code>aweights</code> implement analytic or precision weights, while <code>fweights</code> implement frequency weights. For details see this blog post: https://notstatschat.rbind.io/2020/08/04/weights-in-statistics/.</td>
 <td><code>'aweights'</code></td>
 </tr>
+<tr class="odd">
+<td><code>use_compression</code></td>
+<td>bool</td>
+<td>Whether to use sufficient statistics to losslessly fit the regression model on compressed data. False by default. If True, the model is estimated on compressed data, which can lead to a significant speed-up for large data sets. See the paper by Wong et al (2021) for more details https://arxiv.org/abs/2102.11297. Note that if <code>use_compression = True</code>, inference is lossless. If standard errors are clustered, a wild cluster bootstrap is employed. Parameters for the wild bootstrap can be specified via the <code>reps</code> and <code>seed</code> arguments. Additionally, note that for one-way fixed effects, the estimation method uses a Mundlak transform to “control” for the fixed effects. For two-way fixed effects, a two-way Mundlak transform is employed. For two-way fixed effects, the Mundlak transform is only identical to a two-way fixed effects model if the data set is a panel. We do not provide any checks for the panel status of the data set.</td>
+<td><code>False</code></td>
+</tr>
+<tr class="even">
+<td><code>reps</code></td>
+<td>int</td>
+<td>Number of bootstrap repetitions. Only relevant for boostrap inference applied to compute cluster robust errors when <code>use_compression = True</code>.</td>
+<td><code>100</code></td>
+</tr>
+<tr class="odd">
+<td><code>seed</code></td>
+<td>Optional[int]</td>
+<td>Seed for the random number generator. Only relevant for boostrap inference applied to compute cluster robust errors when <code>use_compression = True</code>.</td>
+<td><code>None</code></td>
+</tr>
 </tbody>
 </table>
 </section>
@@ -500,7 +518,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="examples" class="level2">
 <h2 class="anchored" data-anchor-id="examples">Examples</h2>
 <p>As in <code>fixest</code>, the [Feols(/reference/Feols.qmd) function can be used to estimate a simple linear regression model with fixed effects. The following example regresses <code>Y</code> on <code>X1</code> and <code>X2</code> with fixed effects for <code>f1</code> and <code>f2</code>: fixed effects are specified after the <code>|</code> symbol.</p>
-<div id="517bffbd" class="cell" data-execution_count="1">
+<div id="85e1b2c4" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pyfixest <span class="im">as</span> pf</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> pf.get_data()</span>
@@ -509,7 +527,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>fit.summary()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 
-            <div id="LvD6QL"></div>
+            <div id="zxHTfL"></div>
             <script type="text/javascript" data-lets-plot-script="library">
                 if(!window.letsPlotCallQueue) {
                     window.letsPlotCallQueue = [];
@@ -520,7 +538,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                 (function() {
                     var script = document.createElement("script");
                     script.type = "text/javascript";
-                    script.src = "https://cdn.jsdelivr.net/gh/JetBrains/lets-plot@v4.4.0/js-package/distr/lets-plot.min.js";
+                    script.src = "https://cdn.jsdelivr.net/gh/JetBrains/lets-plot@v4.4.1/js-package/distr/lets-plot.min.js";
                     script.onload = function() {
                         window.letsPlotCall = function(f) {f();};
                         window.letsPlotCallQueue.forEach(function(f) {f();});
@@ -533,9 +551,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                         var div = document.createElement("div");
                         div.style.color = 'darkred';
                         div.textContent = 'Error loading Lets-Plot JS';
-                        document.getElementById("LvD6QL").appendChild(div);
+                        document.getElementById("zxHTfL").appendChild(div);
                     };
-                    var e = document.getElementById("LvD6QL");
+                    var e = document.getElementById("zxHTfL");
                     e.appendChild(script);
                 })()
             </script>
@@ -543,7 +561,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="cell-output cell-output-display">
 
-            <div id="wwPwqb"></div>
+            <div id="mBY5Uh"></div>
             <script type="text/javascript" data-lets-plot-script="library">
                 if(!window.letsPlotCallQueue) {
                     window.letsPlotCallQueue = [];
@@ -554,7 +572,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                 (function() {
                     var script = document.createElement("script");
                     script.type = "text/javascript";
-                    script.src = "https://cdn.jsdelivr.net/gh/JetBrains/lets-plot@v4.4.0/js-package/distr/lets-plot.min.js";
+                    script.src = "https://cdn.jsdelivr.net/gh/JetBrains/lets-plot@v4.4.1/js-package/distr/lets-plot.min.js";
                     script.onload = function() {
                         window.letsPlotCall = function(f) {f();};
                         window.letsPlotCallQueue.forEach(function(f) {f();});
@@ -567,9 +585,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                         var div = document.createElement("div");
                         div.style.color = 'darkred';
                         div.textContent = 'Error loading Lets-Plot JS';
-                        document.getElementById("wwPwqb").appendChild(div);
+                        document.getElementById("mBY5Uh").appendChild(div);
                     };
-                    var e = document.getElementById("wwPwqb");
+                    var e = document.getElementById("mBY5Uh");
                     e.appendChild(script);
                 })()
             </script>
@@ -593,7 +611,7 @@ RMSE: 1.346 R2: 0.659 R2 Within: 0.303 </code></pre>
 </div>
 <p>Calling <code>feols()</code> returns an instance of the [Feols(/reference/Feols.qmd) class. The <code>summary()</code> method can be used to print the results.</p>
 <p>An alternative way to retrieve model results is via the <code>tidy()</code> method, which returns a pandas dataframe with the estimated coefficients, standard errors, t-statistics, and p-values.</p>
-<div id="97728b3d" class="cell" data-execution_count="2">
+<div id="ee96e2dd" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>fit.tidy()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="2">
 <div>
@@ -647,17 +665,17 @@ RMSE: 1.346 R2: 0.659 R2 Within: 0.303 </code></pre>
 </div>
 <p>You can also access all elements in the tidy data frame by dedicated methods, e.g.&nbsp;<code>fit.coef()</code> for the coefficients, <code>fit.se()</code> for the standard errors, <code>fit.tstat()</code> for the t-statistics, and <code>fit.pval()</code> for the p-values, and <code>fit.confint()</code> for the confidence intervals.</p>
 <p>The employed type of inference can be specified via the <code>vcov</code> argument. If vcov is not provided, <code>PyFixest</code> employs the <code>fixest</code> default of iid inference, unless there are fixed effects in the model, in which case <code>feols()</code> clusters the standard error by the first fixed effect (CRV1 inference).</p>
-<div id="2eff59ad" class="cell" data-execution_count="3">
+<div id="96491466" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>fit1 <span class="op">=</span> pf.feols(<span class="st">"Y ~ X1 + X2 | f1 + f2"</span>, data, vcov<span class="op">=</span><span class="st">"iid"</span>)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>fit2 <span class="op">=</span> pf.feols(<span class="st">"Y ~ X1 + X2 | f1 + f2"</span>, data, vcov<span class="op">=</span><span class="st">"hetero"</span>)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>fit3 <span class="op">=</span> pf.feols(<span class="st">"Y ~ X1 + X2 | f1 + f2"</span>, data, vcov<span class="op">=</span>{<span class="st">"CRV1"</span>: <span class="st">"f1"</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Supported inference types are “iid”, “hetero”, “HC1”, “HC2”, “HC3”, and “CRV1”/“CRV3”. Clustered standard errors are specified via a dictionary, e.g.&nbsp;<code>{"CRV1": "f1"}</code> for CRV1 inference with clustering by <code>f1</code> or <code>{"CRV3": "f1"}</code> for CRV3 inference with clustering by <code>f1</code>. For two-way clustering, you can provide a formula string, e.g.&nbsp;<code>{"CRV1": "f1 + f2"}</code> for CRV1 inference with clustering by <code>f1</code>.</p>
-<div id="8d4ba6e9" class="cell" data-execution_count="4">
+<div id="7e2a96b1" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>fit4 <span class="op">=</span> pf.feols(<span class="st">"Y ~ X1 + X2 | f1 + f2"</span>, data, vcov<span class="op">=</span>{<span class="st">"CRV1"</span>: <span class="st">"f1 + f2"</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Inference can be adjusted post estimation via the <code>vcov</code> method:</p>
-<div id="892d01d6" class="cell" data-execution_count="5">
+<div id="d6e355b6" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>fit.summary()</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>fit.vcov(<span class="st">"iid"</span>).summary()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -691,7 +709,7 @@ RMSE: 1.346 R2: 0.659 R2 Within: 0.303 </code></pre>
 </div>
 <p>The <code>ssc</code> argument specifies the small sample correction for inference. In general, <code>feols()</code> uses all of <code>fixest::feols()</code> defaults, but sets the <code>fixef.K</code> argument to <code>"none"</code> whereas the <code>fixest::feols()</code> default is <code>"nested"</code>. See here for more details: <a href="https://github.com/py-econometrics/pyfixest/issues/260">link to github</a>.</p>
 <p><code>feols()</code> supports a range of multiple estimation syntax, i.e.&nbsp;you can estimate multiple models in one call. The following example estimates two models, one with fixed effects for <code>f1</code> and one with fixed effects for <code>f2</code> using the <code>sw()</code> syntax.</p>
-<div id="3cde967b" class="cell" data-execution_count="6">
+<div id="b709bc88" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>fit <span class="op">=</span> pf.feols(<span class="st">"Y ~ X1 + X2 | sw(f1, f2)"</span>, data)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span>(fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="6">
@@ -699,131 +717,141 @@ RMSE: 1.346 R2: 0.659 R2 Within: 0.303 </code></pre>
 </div>
 </div>
 <p>The returned object is an instance of the <code>FixestMulti</code> class. You can access the results of the first model via <code>fit.fetch_model(0)</code> and the results of the second model via <code>fit.fetch_model(1)</code>. You can compare the model results via the <code>etable()</code> function:</p>
-<div id="3d169341" class="cell" data-execution_count="7">
+<div id="b679969e" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>pf.etable([fit.fetch_model(<span class="dv">0</span>), fit.fetch_model(<span class="dv">1</span>)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Model:  Y~X1+X2|f1
 Model:  Y~X1+X2|f2</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="7">
-<style type="text/css">
-#T_e7f94 thead th {
-  text-align: center;
-}
-#T_e7f94 thead tr:nth-child(1) th {
-  border-top: 2px solid black;
-}
-#T_e7f94 thead tr:nth-child(1) th:nth-child(n+2) {
-  border-bottom: 0.5px solid black;
-}
-#T_e7f94 tbody tr:nth-child(0) td {
-  background-color: #f0f0f0;
-}
-#T_e7f94 tbody tr:nth-child(1) td {
-  border-top: 1px solid black;
-}
-#T_e7f94 tbody tr:nth-child(2) td {
-  border-bottom: 1px solid black;
-}
-#T_e7f94 tbody tr:nth-child(4) td {
-  border-bottom: 1px solid black;
-}
-#T_e7f94 tbody tr:nth-child(7) td {
-  border-bottom: 2px solid black;
-}
-#T_e7f94 tbody td {
-  background-color: #ffffff;
-}
-#T_e7f94 tbody tr td:first-child {
-  background-color: #f0f0f0;
-  font-weight: bold;
-  text-align: left;
-}
-#T_e7f94 caption {
-  caption-side: bottom;
-  font-size: 1em;
-  text-align: justify;
-}
-#T_e7f94_row0_col0, #T_e7f94_row1_col0, #T_e7f94_row2_col0, #T_e7f94_row3_col0, #T_e7f94_row4_col0, #T_e7f94_row5_col0, #T_e7f94_row6_col0 {
-  text-align: left;
-}
-#T_e7f94_row0_col1, #T_e7f94_row0_col2, #T_e7f94_row1_col1, #T_e7f94_row1_col2, #T_e7f94_row2_col1, #T_e7f94_row2_col2, #T_e7f94_row3_col1, #T_e7f94_row3_col2, #T_e7f94_row4_col1, #T_e7f94_row4_col2, #T_e7f94_row5_col1, #T_e7f94_row5_col2, #T_e7f94_row6_col1, #T_e7f94_row6_col2 {
-  text-align: center;
-}
+<div id="jjoczuobqs" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>
+#jjoczuobqs table {
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+        }
+
+#jjoczuobqs thead, tbody, tfoot, tr, td, th { border-style: none; }
+ tr { background-color: transparent; }
+#jjoczuobqs p { margin: 0; padding: 0; }
+ #jjoczuobqs .gt_table { display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: hidden; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; }
+ #jjoczuobqs .gt_caption { padding-top: 4px; padding-bottom: 4px; }
+ #jjoczuobqs .gt_title { color: #333333; font-size: 125%; font-weight: initial; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; border-bottom-color: #FFFFFF; border-bottom-width: 0; }
+ #jjoczuobqs .gt_subtitle { color: #333333; font-size: 85%; font-weight: initial; padding-top: 3px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; border-top-color: #FFFFFF; border-top-width: 0; }
+ #jjoczuobqs .gt_heading { background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #jjoczuobqs .gt_bottom_border { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #jjoczuobqs .gt_col_headings { border-top-style: solid; border-top-width: 2px; border-top-color: black; border-bottom-style: solid; border-bottom-width: 0.5px; border-bottom-color: black; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #jjoczuobqs .gt_col_heading { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 0px; border-left-color: white; border-right-style: none; border-right-width: 0px; border-right-color: white; vertical-align: bottom; padding-top: 4px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; }
+ #jjoczuobqs .gt_column_spanner_outer { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; padding-top: 0; padding-bottom: 0; padding-left: 4px; padding-right: 4px; }
+ #jjoczuobqs .gt_column_spanner_outer:first-child { padding-left: 0; }
+ #jjoczuobqs .gt_column_spanner_outer:last-child { padding-right: 0; }
+ #jjoczuobqs .gt_column_spanner { border-bottom-style: solid; border-bottom-width: 0.5px; border-bottom-color: black; vertical-align: bottom; padding-top: 4px; padding-bottom: 4px; overflow-x: hidden; display: inline-block; width: 100%; }
+ #jjoczuobqs .gt_spanner_row { border-bottom-style: hidden; }
+ #jjoczuobqs .gt_group_heading { padding-top: 0px; padding-bottom: 0px; padding-left: 5px; padding-right: 5px; color: #333333; background-color: #FFFFFF; font-size: 0px; font-weight: initial; text-transform: inherit; border-top-style: solid; border-top-width: 0.5px; border-top-color: black; border-bottom-style: solid; border-bottom-width: 0.5px; border-bottom-color: black; border-left-style: none; border-left-width: 1px; border-left-color: white; border-right-style: none; border-right-width: 1px; border-right-color: white; vertical-align: middle; text-align: left; }
+ #jjoczuobqs .gt_empty_group_heading { padding: 0.5px; color: #333333; background-color: #FFFFFF; font-size: 0px; font-weight: initial; border-top-style: solid; border-top-width: 0.5px; border-top-color: black; border-bottom-style: solid; border-bottom-width: 0.5px; border-bottom-color: black; vertical-align: middle; }
+ #jjoczuobqs .gt_from_md> :first-child { margin-top: 0; }
+ #jjoczuobqs .gt_from_md> :last-child { margin-bottom: 0; }
+ #jjoczuobqs .gt_row { padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: none; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 0px; border-left-color: white; border-right-style: none; border-right-width: 0px; border-right-color: white; vertical-align: middle; overflow-x: hidden; }
+ #jjoczuobqs .gt_stub { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: hidden; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; }
+ #jjoczuobqs .gt_stub_row_group { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; vertical-align: top; }
+ #jjoczuobqs .gt_row_group_first td { border-top-width: 0.5px; }
+ #jjoczuobqs .gt_row_group_first th { border-top-width: 0.5px; }
+ #jjoczuobqs .gt_table_body { border-top-style: solid; border-top-width: 0.5px; border-top-color: black; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: black; }
+ #jjoczuobqs .gt_sourcenotes { color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; }
+ #jjoczuobqs .gt_sourcenote { font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; text-align: left; }
+ #jjoczuobqs .gt_left { text-align: left; }
+ #jjoczuobqs .gt_center { text-align: center; }
+ #jjoczuobqs .gt_right { text-align: right; font-variant-numeric: tabular-nums; }
+ #jjoczuobqs .gt_font_normal { font-weight: normal; }
+ #jjoczuobqs .gt_font_bold { font-weight: bold; }
+ #jjoczuobqs .gt_font_italic { font-style: italic; }
+ #jjoczuobqs .gt_super { font-size: 65%; }
+ #jjoczuobqs .gt_footnote_marks { font-size: 75%; vertical-align: 0.4em; position: initial; }
+ #jjoczuobqs .gt_asterisk { font-size: 100%; vertical-align: 0; }
+ 
 </style>
 
-<div id="T_e7f94" class="quarto-float quarto-figure quarto-figure-center anchored" data-quarto-postprocess="true">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="T_e7f94-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;1: Significance levels: * p &lt; 0.05, ** p &lt; 0.01, *** p &lt; 0.001. Format of coefficient cell: Coefficient (Std. Error)
-</figcaption>
-<div aria-describedby="T_e7f94-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<table id="T_e7f94" class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width: 33%">
 <col style="width: 33%">
 <col style="width: 33%">
 </colgroup>
 <thead>
-<tr class="header">
-<th id="T_e7f94_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th"></th>
-<th colspan="2" id="T_e7f94_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Y</th>
+<tr class="header gt_col_headings gt_spanner_row">
+<th rowspan="2" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col"></th>
+<th colspan="2" id="Y" class="gt_center gt_columns_top_border gt_column_spanner_outer" data-quarto-table-cell-role="th" scope="colgroup"><span class="gt_column_spanner">Y</span></th>
 </tr>
-<tr class="odd">
-<th id="T_e7f94_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th"></th>
-<th id="T_e7f94_level1_col1" class="col_heading level1 col1" data-quarto-table-cell-role="th">(1)</th>
-<th id="T_e7f94_level1_col2" class="col_heading level1 col2" data-quarto-table-cell-role="th">(2)</th>
+<tr class="odd gt_col_headings">
+<th id="(1)" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">(1)</th>
+<th id="(2)" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">(2)</th>
 </tr>
 </thead>
-<tbody>
-<tr class="odd">
-<td id="T_e7f94_row0_col0" class="data row0 col0">X1</td>
-<td id="T_e7f94_row0_col1" class="data row0 col1">-0.950***<br>
+<tbody class="gt_table_body">
+<tr class="odd gt_group_heading_row">
+<td colspan="3" class="gt_group_heading" data-quarto-table-cell-role="th">coef</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left gt_stub" data-quarto-table-cell-role="th">X1</td>
+<td class="gt_row gt_center">-0.950***<br>
 (0.067)</td>
-<td id="T_e7f94_row0_col2" class="data row0 col2">-0.979***<br>
+<td class="gt_row gt_center">-0.979***<br>
 (0.077)</td>
 </tr>
-<tr class="even">
-<td id="T_e7f94_row1_col0" class="data row1 col0">X2</td>
-<td id="T_e7f94_row1_col1" class="data row1 col1">-0.174***<br>
+<tr class="odd">
+<td class="gt_row gt_left gt_stub" data-quarto-table-cell-role="th">X2</td>
+<td class="gt_row gt_center">-0.174***<br>
 (0.018)</td>
-<td id="T_e7f94_row1_col2" class="data row1 col2">-0.175***<br>
+<td class="gt_row gt_center">-0.175***<br>
 (0.022)</td>
 </tr>
+<tr class="even gt_group_heading_row">
+<td colspan="3" class="gt_group_heading" data-quarto-table-cell-role="th">fe</td>
+</tr>
 <tr class="odd">
-<td id="T_e7f94_row2_col0" class="data row2 col0">f2</td>
-<td id="T_e7f94_row2_col1" class="data row2 col1">-</td>
-<td id="T_e7f94_row2_col2" class="data row2 col2">x</td>
+<td class="gt_row gt_left gt_stub" data-quarto-table-cell-role="th">f2</td>
+<td class="gt_row gt_center">-</td>
+<td class="gt_row gt_center">x</td>
 </tr>
 <tr class="even">
-<td id="T_e7f94_row3_col0" class="data row3 col0">f1</td>
-<td id="T_e7f94_row3_col1" class="data row3 col1">x</td>
-<td id="T_e7f94_row3_col2" class="data row3 col2">-</td>
+<td class="gt_row gt_left gt_stub" data-quarto-table-cell-role="th">f1</td>
+<td class="gt_row gt_center">x</td>
+<td class="gt_row gt_center">-</td>
 </tr>
-<tr class="odd">
-<td id="T_e7f94_row4_col0" class="data row4 col0">Observations</td>
-<td id="T_e7f94_row4_col1" class="data row4 col1">997</td>
-<td id="T_e7f94_row4_col2" class="data row4 col2">998</td>
+<tr class="odd gt_group_heading_row">
+<td colspan="3" class="gt_group_heading" data-quarto-table-cell-role="th">stats</td>
 </tr>
 <tr class="even">
-<td id="T_e7f94_row5_col0" class="data row5 col0">S.E. type</td>
-<td id="T_e7f94_row5_col1" class="data row5 col1">by: f1</td>
-<td id="T_e7f94_row5_col2" class="data row5 col2">by: f2</td>
+<td class="gt_row gt_left gt_stub" data-quarto-table-cell-role="th">Observations</td>
+<td class="gt_row gt_center">997</td>
+<td class="gt_row gt_center">998</td>
 </tr>
 <tr class="odd">
-<td id="T_e7f94_row6_col0" class="data row6 col0">R<sup>2</sup></td>
-<td id="T_e7f94_row6_col1" class="data row6 col1">0.489</td>
-<td id="T_e7f94_row6_col2" class="data row6 col2">0.354</td>
+<td class="gt_row gt_left gt_stub" data-quarto-table-cell-role="th">S.E. type</td>
+<td class="gt_row gt_center">by: f1</td>
+<td class="gt_row gt_center">by: f2</td>
 </tr>
-</tbody>
+<tr class="even">
+<td class="gt_row gt_left gt_stub" data-quarto-table-cell-role="th">R<sup>2</sup></td>
+<td class="gt_row gt_center">0.489</td>
+<td class="gt_row gt_center">0.354</td>
+</tr>
+</tbody><tfoot class="gt_sourcenotes">
+<tr class="even">
+<td colspan="3" class="gt_sourcenote"></td>
+</tr>
+</tfoot>
+
 </table>
+
+
 </div>
-</figure>
-</div>
+        
 </div>
 </div>
 <p>Other supported multiple estimation syntax include <code>sw0()</code>, <code>csw()</code> and <code>csw0()</code>. While <code>sw()</code> adds variables in a “stepwise” fashion, <code>csw()</code> does so cumulatively.</p>
-<div id="547da385" class="cell" data-execution_count="8">
+<div id="227af7ae" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>fit <span class="op">=</span> pf.feols(<span class="st">"Y ~ X1 + X2 | csw(f1, f2)"</span>, data)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>pf.etable([fit.fetch_model(<span class="dv">0</span>), fit.fetch_model(<span class="dv">1</span>)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -831,124 +859,134 @@ Table&nbsp;1: Significance levels: * p &lt; 0.05, ** p &lt; 0.01, *** p &lt; 0.0
 Model:  Y~X1+X2|f1+f2</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="8">
-<style type="text/css">
-#T_67401 thead th {
-  text-align: center;
-}
-#T_67401 thead tr:nth-child(1) th {
-  border-top: 2px solid black;
-}
-#T_67401 thead tr:nth-child(1) th:nth-child(n+2) {
-  border-bottom: 0.5px solid black;
-}
-#T_67401 tbody tr:nth-child(0) td {
-  background-color: #f0f0f0;
-}
-#T_67401 tbody tr:nth-child(1) td {
-  border-top: 1px solid black;
-}
-#T_67401 tbody tr:nth-child(2) td {
-  border-bottom: 1px solid black;
-}
-#T_67401 tbody tr:nth-child(4) td {
-  border-bottom: 1px solid black;
-}
-#T_67401 tbody tr:nth-child(7) td {
-  border-bottom: 2px solid black;
-}
-#T_67401 tbody td {
-  background-color: #ffffff;
-}
-#T_67401 tbody tr td:first-child {
-  background-color: #f0f0f0;
-  font-weight: bold;
-  text-align: left;
-}
-#T_67401 caption {
-  caption-side: bottom;
-  font-size: 1em;
-  text-align: justify;
-}
-#T_67401_row0_col0, #T_67401_row1_col0, #T_67401_row2_col0, #T_67401_row3_col0, #T_67401_row4_col0, #T_67401_row5_col0, #T_67401_row6_col0 {
-  text-align: left;
-}
-#T_67401_row0_col1, #T_67401_row0_col2, #T_67401_row1_col1, #T_67401_row1_col2, #T_67401_row2_col1, #T_67401_row2_col2, #T_67401_row3_col1, #T_67401_row3_col2, #T_67401_row4_col1, #T_67401_row4_col2, #T_67401_row5_col1, #T_67401_row5_col2, #T_67401_row6_col1, #T_67401_row6_col2 {
-  text-align: center;
-}
+<div id="rnvbfbdeix" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>
+#rnvbfbdeix table {
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+        }
+
+#rnvbfbdeix thead, tbody, tfoot, tr, td, th { border-style: none; }
+ tr { background-color: transparent; }
+#rnvbfbdeix p { margin: 0; padding: 0; }
+ #rnvbfbdeix .gt_table { display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: hidden; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; }
+ #rnvbfbdeix .gt_caption { padding-top: 4px; padding-bottom: 4px; }
+ #rnvbfbdeix .gt_title { color: #333333; font-size: 125%; font-weight: initial; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; border-bottom-color: #FFFFFF; border-bottom-width: 0; }
+ #rnvbfbdeix .gt_subtitle { color: #333333; font-size: 85%; font-weight: initial; padding-top: 3px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; border-top-color: #FFFFFF; border-top-width: 0; }
+ #rnvbfbdeix .gt_heading { background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #rnvbfbdeix .gt_bottom_border { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #rnvbfbdeix .gt_col_headings { border-top-style: solid; border-top-width: 2px; border-top-color: black; border-bottom-style: solid; border-bottom-width: 0.5px; border-bottom-color: black; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #rnvbfbdeix .gt_col_heading { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 0px; border-left-color: white; border-right-style: none; border-right-width: 0px; border-right-color: white; vertical-align: bottom; padding-top: 4px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; }
+ #rnvbfbdeix .gt_column_spanner_outer { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; padding-top: 0; padding-bottom: 0; padding-left: 4px; padding-right: 4px; }
+ #rnvbfbdeix .gt_column_spanner_outer:first-child { padding-left: 0; }
+ #rnvbfbdeix .gt_column_spanner_outer:last-child { padding-right: 0; }
+ #rnvbfbdeix .gt_column_spanner { border-bottom-style: solid; border-bottom-width: 0.5px; border-bottom-color: black; vertical-align: bottom; padding-top: 4px; padding-bottom: 4px; overflow-x: hidden; display: inline-block; width: 100%; }
+ #rnvbfbdeix .gt_spanner_row { border-bottom-style: hidden; }
+ #rnvbfbdeix .gt_group_heading { padding-top: 0px; padding-bottom: 0px; padding-left: 5px; padding-right: 5px; color: #333333; background-color: #FFFFFF; font-size: 0px; font-weight: initial; text-transform: inherit; border-top-style: solid; border-top-width: 0.5px; border-top-color: black; border-bottom-style: solid; border-bottom-width: 0.5px; border-bottom-color: black; border-left-style: none; border-left-width: 1px; border-left-color: white; border-right-style: none; border-right-width: 1px; border-right-color: white; vertical-align: middle; text-align: left; }
+ #rnvbfbdeix .gt_empty_group_heading { padding: 0.5px; color: #333333; background-color: #FFFFFF; font-size: 0px; font-weight: initial; border-top-style: solid; border-top-width: 0.5px; border-top-color: black; border-bottom-style: solid; border-bottom-width: 0.5px; border-bottom-color: black; vertical-align: middle; }
+ #rnvbfbdeix .gt_from_md> :first-child { margin-top: 0; }
+ #rnvbfbdeix .gt_from_md> :last-child { margin-bottom: 0; }
+ #rnvbfbdeix .gt_row { padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: none; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 0px; border-left-color: white; border-right-style: none; border-right-width: 0px; border-right-color: white; vertical-align: middle; overflow-x: hidden; }
+ #rnvbfbdeix .gt_stub { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: hidden; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; }
+ #rnvbfbdeix .gt_stub_row_group { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; vertical-align: top; }
+ #rnvbfbdeix .gt_row_group_first td { border-top-width: 0.5px; }
+ #rnvbfbdeix .gt_row_group_first th { border-top-width: 0.5px; }
+ #rnvbfbdeix .gt_table_body { border-top-style: solid; border-top-width: 0.5px; border-top-color: black; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: black; }
+ #rnvbfbdeix .gt_sourcenotes { color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; }
+ #rnvbfbdeix .gt_sourcenote { font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; text-align: left; }
+ #rnvbfbdeix .gt_left { text-align: left; }
+ #rnvbfbdeix .gt_center { text-align: center; }
+ #rnvbfbdeix .gt_right { text-align: right; font-variant-numeric: tabular-nums; }
+ #rnvbfbdeix .gt_font_normal { font-weight: normal; }
+ #rnvbfbdeix .gt_font_bold { font-weight: bold; }
+ #rnvbfbdeix .gt_font_italic { font-style: italic; }
+ #rnvbfbdeix .gt_super { font-size: 65%; }
+ #rnvbfbdeix .gt_footnote_marks { font-size: 75%; vertical-align: 0.4em; position: initial; }
+ #rnvbfbdeix .gt_asterisk { font-size: 100%; vertical-align: 0; }
+ 
 </style>
 
-<div id="T_67401" class="quarto-float quarto-figure quarto-figure-center anchored" data-quarto-postprocess="true">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="T_67401-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;2: Significance levels: * p &lt; 0.05, ** p &lt; 0.01, *** p &lt; 0.001. Format of coefficient cell: Coefficient (Std. Error)
-</figcaption>
-<div aria-describedby="T_67401-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<table id="T_67401" class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width: 33%">
 <col style="width: 33%">
 <col style="width: 33%">
 </colgroup>
 <thead>
-<tr class="header">
-<th id="T_67401_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th"></th>
-<th colspan="2" id="T_67401_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Y</th>
+<tr class="header gt_col_headings gt_spanner_row">
+<th rowspan="2" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col"></th>
+<th colspan="2" id="Y" class="gt_center gt_columns_top_border gt_column_spanner_outer" data-quarto-table-cell-role="th" scope="colgroup"><span class="gt_column_spanner">Y</span></th>
 </tr>
-<tr class="odd">
-<th id="T_67401_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th"></th>
-<th id="T_67401_level1_col1" class="col_heading level1 col1" data-quarto-table-cell-role="th">(1)</th>
-<th id="T_67401_level1_col2" class="col_heading level1 col2" data-quarto-table-cell-role="th">(2)</th>
+<tr class="odd gt_col_headings">
+<th id="(1)" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">(1)</th>
+<th id="(2)" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">(2)</th>
 </tr>
 </thead>
-<tbody>
-<tr class="odd">
-<td id="T_67401_row0_col0" class="data row0 col0">X1</td>
-<td id="T_67401_row0_col1" class="data row0 col1">-0.950***<br>
+<tbody class="gt_table_body">
+<tr class="odd gt_group_heading_row">
+<td colspan="3" class="gt_group_heading" data-quarto-table-cell-role="th">coef</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left gt_stub" data-quarto-table-cell-role="th">X1</td>
+<td class="gt_row gt_center">-0.950***<br>
 (0.067)</td>
-<td id="T_67401_row0_col2" class="data row0 col2">-0.924***<br>
+<td class="gt_row gt_center">-0.924***<br>
 (0.061)</td>
 </tr>
-<tr class="even">
-<td id="T_67401_row1_col0" class="data row1 col0">X2</td>
-<td id="T_67401_row1_col1" class="data row1 col1">-0.174***<br>
+<tr class="odd">
+<td class="gt_row gt_left gt_stub" data-quarto-table-cell-role="th">X2</td>
+<td class="gt_row gt_center">-0.174***<br>
 (0.018)</td>
-<td id="T_67401_row1_col2" class="data row1 col2">-0.174***<br>
+<td class="gt_row gt_center">-0.174***<br>
 (0.015)</td>
 </tr>
+<tr class="even gt_group_heading_row">
+<td colspan="3" class="gt_group_heading" data-quarto-table-cell-role="th">fe</td>
+</tr>
 <tr class="odd">
-<td id="T_67401_row2_col0" class="data row2 col0">f2</td>
-<td id="T_67401_row2_col1" class="data row2 col1">-</td>
-<td id="T_67401_row2_col2" class="data row2 col2">x</td>
+<td class="gt_row gt_left gt_stub" data-quarto-table-cell-role="th">f2</td>
+<td class="gt_row gt_center">-</td>
+<td class="gt_row gt_center">x</td>
 </tr>
 <tr class="even">
-<td id="T_67401_row3_col0" class="data row3 col0">f1</td>
-<td id="T_67401_row3_col1" class="data row3 col1">x</td>
-<td id="T_67401_row3_col2" class="data row3 col2">x</td>
+<td class="gt_row gt_left gt_stub" data-quarto-table-cell-role="th">f1</td>
+<td class="gt_row gt_center">x</td>
+<td class="gt_row gt_center">x</td>
 </tr>
-<tr class="odd">
-<td id="T_67401_row4_col0" class="data row4 col0">Observations</td>
-<td id="T_67401_row4_col1" class="data row4 col1">997</td>
-<td id="T_67401_row4_col2" class="data row4 col2">997</td>
+<tr class="odd gt_group_heading_row">
+<td colspan="3" class="gt_group_heading" data-quarto-table-cell-role="th">stats</td>
 </tr>
 <tr class="even">
-<td id="T_67401_row5_col0" class="data row5 col0">S.E. type</td>
-<td id="T_67401_row5_col1" class="data row5 col1">by: f1</td>
-<td id="T_67401_row5_col2" class="data row5 col2">by: f1</td>
+<td class="gt_row gt_left gt_stub" data-quarto-table-cell-role="th">Observations</td>
+<td class="gt_row gt_center">997</td>
+<td class="gt_row gt_center">997</td>
 </tr>
 <tr class="odd">
-<td id="T_67401_row6_col0" class="data row6 col0">R<sup>2</sup></td>
-<td id="T_67401_row6_col1" class="data row6 col1">0.489</td>
-<td id="T_67401_row6_col2" class="data row6 col2">0.659</td>
+<td class="gt_row gt_left gt_stub" data-quarto-table-cell-role="th">S.E. type</td>
+<td class="gt_row gt_center">by: f1</td>
+<td class="gt_row gt_center">by: f1</td>
 </tr>
-</tbody>
+<tr class="even">
+<td class="gt_row gt_left gt_stub" data-quarto-table-cell-role="th">R<sup>2</sup></td>
+<td class="gt_row gt_center">0.489</td>
+<td class="gt_row gt_center">0.659</td>
+</tr>
+</tbody><tfoot class="gt_sourcenotes">
+<tr class="even">
+<td colspan="3" class="gt_sourcenote"></td>
+</tr>
+</tfoot>
+
 </table>
+
+
 </div>
-</figure>
-</div>
+        
 </div>
 </div>
 <p>The <code>sw0()</code> and <code>csw0()</code> syntax are similar to <code>sw()</code> and <code>csw()</code>, but start with a model that excludes the variables specified in <code>sw()</code> and <code>csw()</code>:</p>
-<div id="d7df52ee" class="cell" data-execution_count="9">
+<div id="8f47e904" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>fit <span class="op">=</span> pf.feols(<span class="st">"Y ~ X1 + X2 | sw0(f1, f2)"</span>, data)</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>pf.etable([fit.fetch_model(<span class="dv">0</span>), fit.fetch_model(<span class="dv">1</span>), fit.fetch_model(<span class="dv">2</span>)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -957,59 +995,55 @@ Model:  Y~X1+X2|f1
 Model:  Y~X1+X2|f2</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="9">
-<style type="text/css">
-#T_b4c8a thead th {
-  text-align: center;
-}
-#T_b4c8a thead tr:nth-child(1) th {
-  border-top: 2px solid black;
-}
-#T_b4c8a thead tr:nth-child(1) th:nth-child(n+2) {
-  border-bottom: 0.5px solid black;
-}
-#T_b4c8a tbody tr:nth-child(0) td {
-  background-color: #f0f0f0;
-}
-#T_b4c8a tbody tr:nth-child(1) td {
-  border-top: 1px solid black;
-}
-#T_b4c8a tbody tr:nth-child(3) td {
-  border-bottom: 1px solid black;
-}
-#T_b4c8a tbody tr:nth-child(5) td {
-  border-bottom: 1px solid black;
-}
-#T_b4c8a tbody tr:nth-child(8) td {
-  border-bottom: 2px solid black;
-}
-#T_b4c8a tbody td {
-  background-color: #ffffff;
-}
-#T_b4c8a tbody tr td:first-child {
-  background-color: #f0f0f0;
-  font-weight: bold;
-  text-align: left;
-}
-#T_b4c8a caption {
-  caption-side: bottom;
-  font-size: 1em;
-  text-align: justify;
-}
-#T_b4c8a_row0_col0, #T_b4c8a_row1_col0, #T_b4c8a_row2_col0, #T_b4c8a_row3_col0, #T_b4c8a_row4_col0, #T_b4c8a_row5_col0, #T_b4c8a_row6_col0, #T_b4c8a_row7_col0 {
-  text-align: left;
-}
-#T_b4c8a_row0_col1, #T_b4c8a_row0_col2, #T_b4c8a_row0_col3, #T_b4c8a_row1_col1, #T_b4c8a_row1_col2, #T_b4c8a_row1_col3, #T_b4c8a_row2_col1, #T_b4c8a_row2_col2, #T_b4c8a_row2_col3, #T_b4c8a_row3_col1, #T_b4c8a_row3_col2, #T_b4c8a_row3_col3, #T_b4c8a_row4_col1, #T_b4c8a_row4_col2, #T_b4c8a_row4_col3, #T_b4c8a_row5_col1, #T_b4c8a_row5_col2, #T_b4c8a_row5_col3, #T_b4c8a_row6_col1, #T_b4c8a_row6_col2, #T_b4c8a_row6_col3, #T_b4c8a_row7_col1, #T_b4c8a_row7_col2, #T_b4c8a_row7_col3 {
-  text-align: center;
-}
+<div id="lvjzdykpvb" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>
+#lvjzdykpvb table {
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+        }
+
+#lvjzdykpvb thead, tbody, tfoot, tr, td, th { border-style: none; }
+ tr { background-color: transparent; }
+#lvjzdykpvb p { margin: 0; padding: 0; }
+ #lvjzdykpvb .gt_table { display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: hidden; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; }
+ #lvjzdykpvb .gt_caption { padding-top: 4px; padding-bottom: 4px; }
+ #lvjzdykpvb .gt_title { color: #333333; font-size: 125%; font-weight: initial; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; border-bottom-color: #FFFFFF; border-bottom-width: 0; }
+ #lvjzdykpvb .gt_subtitle { color: #333333; font-size: 85%; font-weight: initial; padding-top: 3px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; border-top-color: #FFFFFF; border-top-width: 0; }
+ #lvjzdykpvb .gt_heading { background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #lvjzdykpvb .gt_bottom_border { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #lvjzdykpvb .gt_col_headings { border-top-style: solid; border-top-width: 2px; border-top-color: black; border-bottom-style: solid; border-bottom-width: 0.5px; border-bottom-color: black; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #lvjzdykpvb .gt_col_heading { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 0px; border-left-color: white; border-right-style: none; border-right-width: 0px; border-right-color: white; vertical-align: bottom; padding-top: 4px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; }
+ #lvjzdykpvb .gt_column_spanner_outer { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; padding-top: 0; padding-bottom: 0; padding-left: 4px; padding-right: 4px; }
+ #lvjzdykpvb .gt_column_spanner_outer:first-child { padding-left: 0; }
+ #lvjzdykpvb .gt_column_spanner_outer:last-child { padding-right: 0; }
+ #lvjzdykpvb .gt_column_spanner { border-bottom-style: solid; border-bottom-width: 0.5px; border-bottom-color: black; vertical-align: bottom; padding-top: 4px; padding-bottom: 4px; overflow-x: hidden; display: inline-block; width: 100%; }
+ #lvjzdykpvb .gt_spanner_row { border-bottom-style: hidden; }
+ #lvjzdykpvb .gt_group_heading { padding-top: 0px; padding-bottom: 0px; padding-left: 5px; padding-right: 5px; color: #333333; background-color: #FFFFFF; font-size: 0px; font-weight: initial; text-transform: inherit; border-top-style: solid; border-top-width: 0.5px; border-top-color: black; border-bottom-style: solid; border-bottom-width: 0.5px; border-bottom-color: black; border-left-style: none; border-left-width: 1px; border-left-color: white; border-right-style: none; border-right-width: 1px; border-right-color: white; vertical-align: middle; text-align: left; }
+ #lvjzdykpvb .gt_empty_group_heading { padding: 0.5px; color: #333333; background-color: #FFFFFF; font-size: 0px; font-weight: initial; border-top-style: solid; border-top-width: 0.5px; border-top-color: black; border-bottom-style: solid; border-bottom-width: 0.5px; border-bottom-color: black; vertical-align: middle; }
+ #lvjzdykpvb .gt_from_md> :first-child { margin-top: 0; }
+ #lvjzdykpvb .gt_from_md> :last-child { margin-bottom: 0; }
+ #lvjzdykpvb .gt_row { padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: none; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 0px; border-left-color: white; border-right-style: none; border-right-width: 0px; border-right-color: white; vertical-align: middle; overflow-x: hidden; }
+ #lvjzdykpvb .gt_stub { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: hidden; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; }
+ #lvjzdykpvb .gt_stub_row_group { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; vertical-align: top; }
+ #lvjzdykpvb .gt_row_group_first td { border-top-width: 0.5px; }
+ #lvjzdykpvb .gt_row_group_first th { border-top-width: 0.5px; }
+ #lvjzdykpvb .gt_table_body { border-top-style: solid; border-top-width: 0.5px; border-top-color: black; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: black; }
+ #lvjzdykpvb .gt_sourcenotes { color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; }
+ #lvjzdykpvb .gt_sourcenote { font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; text-align: left; }
+ #lvjzdykpvb .gt_left { text-align: left; }
+ #lvjzdykpvb .gt_center { text-align: center; }
+ #lvjzdykpvb .gt_right { text-align: right; font-variant-numeric: tabular-nums; }
+ #lvjzdykpvb .gt_font_normal { font-weight: normal; }
+ #lvjzdykpvb .gt_font_bold { font-weight: bold; }
+ #lvjzdykpvb .gt_font_italic { font-style: italic; }
+ #lvjzdykpvb .gt_super { font-size: 65%; }
+ #lvjzdykpvb .gt_footnote_marks { font-size: 75%; vertical-align: 0.4em; position: initial; }
+ #lvjzdykpvb .gt_asterisk { font-size: 100%; vertical-align: 0; }
+ 
 </style>
 
-<div id="T_b4c8a" class="quarto-float quarto-figure quarto-figure-center anchored" data-quarto-postprocess="true">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="T_b4c8a-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;3: Significance levels: * p &lt; 0.05, ** p &lt; 0.01, *** p &lt; 0.001. Format of coefficient cell: Coefficient (Std. Error)
-</figcaption>
-<div aria-describedby="T_b4c8a-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<table id="T_b4c8a" class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width: 25%">
 <col style="width: 25%">
@@ -1017,82 +1051,102 @@ Table&nbsp;3: Significance levels: * p &lt; 0.05, ** p &lt; 0.01, *** p &lt; 0.0
 <col style="width: 25%">
 </colgroup>
 <thead>
-<tr class="header">
-<th id="T_b4c8a_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th"></th>
-<th colspan="3" id="T_b4c8a_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Y</th>
+<tr class="header gt_col_headings gt_spanner_row">
+<th rowspan="2" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col"></th>
+<th colspan="3" id="Y" class="gt_center gt_columns_top_border gt_column_spanner_outer" data-quarto-table-cell-role="th" scope="colgroup"><span class="gt_column_spanner">Y</span></th>
 </tr>
-<tr class="odd">
-<th id="T_b4c8a_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th"></th>
-<th id="T_b4c8a_level1_col1" class="col_heading level1 col1" data-quarto-table-cell-role="th">(1)</th>
-<th id="T_b4c8a_level1_col2" class="col_heading level1 col2" data-quarto-table-cell-role="th">(2)</th>
-<th id="T_b4c8a_level1_col3" class="col_heading level1 col3" data-quarto-table-cell-role="th">(3)</th>
+<tr class="odd gt_col_headings">
+<th id="(1)" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">(1)</th>
+<th id="(2)" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">(2)</th>
+<th id="(3)" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">(3)</th>
 </tr>
 </thead>
-<tbody>
-<tr class="odd">
-<td id="T_b4c8a_row0_col0" class="data row0 col0">Intercept</td>
-<td id="T_b4c8a_row0_col1" class="data row0 col1">0.889***<br>
-(0.108)</td>
-<td id="T_b4c8a_row0_col2" class="data row0 col2"></td>
-<td id="T_b4c8a_row0_col3" class="data row0 col3"></td>
+<tbody class="gt_table_body">
+<tr class="odd gt_group_heading_row">
+<td colspan="4" class="gt_group_heading" data-quarto-table-cell-role="th">coef</td>
 </tr>
 <tr class="even">
-<td id="T_b4c8a_row1_col0" class="data row1 col0">X1</td>
-<td id="T_b4c8a_row1_col1" class="data row1 col1">-0.993***<br>
+<td class="gt_row gt_left gt_stub" data-quarto-table-cell-role="th">X1</td>
+<td class="gt_row gt_center">-0.993***<br>
 (0.082)</td>
-<td id="T_b4c8a_row1_col2" class="data row1 col2">-0.950***<br>
+<td class="gt_row gt_center">-0.950***<br>
 (0.067)</td>
-<td id="T_b4c8a_row1_col3" class="data row1 col3">-0.979***<br>
+<td class="gt_row gt_center">-0.979***<br>
 (0.077)</td>
 </tr>
 <tr class="odd">
-<td id="T_b4c8a_row2_col0" class="data row2 col0">X2</td>
-<td id="T_b4c8a_row2_col1" class="data row2 col1">-0.176***<br>
+<td class="gt_row gt_left gt_stub" data-quarto-table-cell-role="th">X2</td>
+<td class="gt_row gt_center">-0.176***<br>
 (0.022)</td>
-<td id="T_b4c8a_row2_col2" class="data row2 col2">-0.174***<br>
+<td class="gt_row gt_center">-0.174***<br>
 (0.018)</td>
-<td id="T_b4c8a_row2_col3" class="data row2 col3">-0.175***<br>
+<td class="gt_row gt_center">-0.175***<br>
 (0.022)</td>
 </tr>
 <tr class="even">
-<td id="T_b4c8a_row3_col0" class="data row3 col0">f2</td>
-<td id="T_b4c8a_row3_col1" class="data row3 col1">-</td>
-<td id="T_b4c8a_row3_col2" class="data row3 col2">x</td>
-<td id="T_b4c8a_row3_col3" class="data row3 col3">nan</td>
+<td class="gt_row gt_left gt_stub" data-quarto-table-cell-role="th">Intercept</td>
+<td class="gt_row gt_center">0.889***<br>
+(0.108)</td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center"></td>
 </tr>
-<tr class="odd">
-<td id="T_b4c8a_row4_col0" class="data row4 col0">f1</td>
-<td id="T_b4c8a_row4_col1" class="data row4 col1">x</td>
-<td id="T_b4c8a_row4_col2" class="data row4 col2">-</td>
-<td id="T_b4c8a_row4_col3" class="data row4 col3">nan</td>
+<tr class="odd gt_group_heading_row">
+<td colspan="4" class="gt_group_heading" data-quarto-table-cell-role="th">fe</td>
 </tr>
 <tr class="even">
-<td id="T_b4c8a_row5_col0" class="data row5 col0">Observations</td>
-<td id="T_b4c8a_row5_col1" class="data row5 col1">997</td>
-<td id="T_b4c8a_row5_col2" class="data row5 col2">998</td>
-<td id="T_b4c8a_row5_col3" class="data row5 col3">998</td>
+<td class="gt_row gt_left gt_stub" data-quarto-table-cell-role="th">0</td>
+<td class="gt_row gt_center">x</td>
+<td class="gt_row gt_center">-</td>
+<td class="gt_row gt_center">-</td>
 </tr>
 <tr class="odd">
-<td id="T_b4c8a_row6_col0" class="data row6 col0">S.E. type</td>
-<td id="T_b4c8a_row6_col1" class="data row6 col1">by: f1</td>
-<td id="T_b4c8a_row6_col2" class="data row6 col2">by: f2</td>
-<td id="T_b4c8a_row6_col3" class="data row6 col3">iid</td>
+<td class="gt_row gt_left gt_stub" data-quarto-table-cell-role="th">f1</td>
+<td class="gt_row gt_center">-</td>
+<td class="gt_row gt_center">x</td>
+<td class="gt_row gt_center">-</td>
 </tr>
 <tr class="even">
-<td id="T_b4c8a_row7_col0" class="data row7 col0">R<sup>2</sup></td>
-<td id="T_b4c8a_row7_col1" class="data row7 col1">0.489</td>
-<td id="T_b4c8a_row7_col2" class="data row7 col2">0.354</td>
-<td id="T_b4c8a_row7_col3" class="data row7 col3">0.177</td>
+<td class="gt_row gt_left gt_stub" data-quarto-table-cell-role="th">f2</td>
+<td class="gt_row gt_center">-</td>
+<td class="gt_row gt_center">-</td>
+<td class="gt_row gt_center">x</td>
 </tr>
-</tbody>
+<tr class="odd gt_group_heading_row">
+<td colspan="4" class="gt_group_heading" data-quarto-table-cell-role="th">stats</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left gt_stub" data-quarto-table-cell-role="th">Observations</td>
+<td class="gt_row gt_center">998</td>
+<td class="gt_row gt_center">997</td>
+<td class="gt_row gt_center">998</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left gt_stub" data-quarto-table-cell-role="th">S.E. type</td>
+<td class="gt_row gt_center">iid</td>
+<td class="gt_row gt_center">by: f1</td>
+<td class="gt_row gt_center">by: f2</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left gt_stub" data-quarto-table-cell-role="th">R<sup>2</sup></td>
+<td class="gt_row gt_center">0.177</td>
+<td class="gt_row gt_center">0.489</td>
+<td class="gt_row gt_center">0.354</td>
+</tr>
+</tbody><tfoot class="gt_sourcenotes">
+<tr class="even">
+<td colspan="4" class="gt_sourcenote"></td>
+</tr>
+</tfoot>
+
 </table>
+
+
 </div>
-</figure>
-</div>
+        
 </div>
 </div>
 <p>The <code>feols()</code> function also supports multiple dependent variables. The following example estimates two models, one with <code>Y1</code> as the dependent variable and one with <code>Y2</code> as the dependent variable.</p>
-<div id="c0859f15" class="cell" data-execution_count="10">
+<div id="ac92b38e" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>fit <span class="op">=</span> pf.feols(<span class="st">"Y + Y2 ~ X1 | f1 + f2"</span>, data)</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>pf.etable([fit.fetch_model(<span class="dv">0</span>), fit.fetch_model(<span class="dv">1</span>)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -1100,118 +1154,128 @@ Table&nbsp;3: Significance levels: * p &lt; 0.05, ** p &lt; 0.01, *** p &lt; 0.0
 Model:  Y2~X1|f1+f2</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="10">
-<style type="text/css">
-#T_c8f97 thead th {
-  text-align: center;
-}
-#T_c8f97 thead tr:nth-child(1) th {
-  border-top: 2px solid black;
-}
-#T_c8f97 thead tr:nth-child(1) th:nth-child(n+2) {
-  border-bottom: 0.5px solid black;
-}
-#T_c8f97 tbody tr:nth-child(0) td {
-  background-color: #f0f0f0;
-}
-#T_c8f97 tbody tr:nth-child(1) td {
-  border-top: 1px solid black;
-}
-#T_c8f97 tbody tr:nth-child(1) td {
-  border-bottom: 1px solid black;
-}
-#T_c8f97 tbody tr:nth-child(3) td {
-  border-bottom: 1px solid black;
-}
-#T_c8f97 tbody tr:nth-child(6) td {
-  border-bottom: 2px solid black;
-}
-#T_c8f97 tbody td {
-  background-color: #ffffff;
-}
-#T_c8f97 tbody tr td:first-child {
-  background-color: #f0f0f0;
-  font-weight: bold;
-  text-align: left;
-}
-#T_c8f97 caption {
-  caption-side: bottom;
-  font-size: 1em;
-  text-align: justify;
-}
-#T_c8f97_row0_col0, #T_c8f97_row1_col0, #T_c8f97_row2_col0, #T_c8f97_row3_col0, #T_c8f97_row4_col0, #T_c8f97_row5_col0 {
-  text-align: left;
-}
-#T_c8f97_row0_col1, #T_c8f97_row0_col2, #T_c8f97_row1_col1, #T_c8f97_row1_col2, #T_c8f97_row2_col1, #T_c8f97_row2_col2, #T_c8f97_row3_col1, #T_c8f97_row3_col2, #T_c8f97_row4_col1, #T_c8f97_row4_col2, #T_c8f97_row5_col1, #T_c8f97_row5_col2 {
-  text-align: center;
-}
+<div id="dkeezizlrz" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>
+#dkeezizlrz table {
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+        }
+
+#dkeezizlrz thead, tbody, tfoot, tr, td, th { border-style: none; }
+ tr { background-color: transparent; }
+#dkeezizlrz p { margin: 0; padding: 0; }
+ #dkeezizlrz .gt_table { display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: hidden; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; }
+ #dkeezizlrz .gt_caption { padding-top: 4px; padding-bottom: 4px; }
+ #dkeezizlrz .gt_title { color: #333333; font-size: 125%; font-weight: initial; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; border-bottom-color: #FFFFFF; border-bottom-width: 0; }
+ #dkeezizlrz .gt_subtitle { color: #333333; font-size: 85%; font-weight: initial; padding-top: 3px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; border-top-color: #FFFFFF; border-top-width: 0; }
+ #dkeezizlrz .gt_heading { background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #dkeezizlrz .gt_bottom_border { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #dkeezizlrz .gt_col_headings { border-top-style: solid; border-top-width: 2px; border-top-color: black; border-bottom-style: solid; border-bottom-width: 0.5px; border-bottom-color: black; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #dkeezizlrz .gt_col_heading { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 0px; border-left-color: white; border-right-style: none; border-right-width: 0px; border-right-color: white; vertical-align: bottom; padding-top: 4px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; }
+ #dkeezizlrz .gt_column_spanner_outer { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; padding-top: 0; padding-bottom: 0; padding-left: 4px; padding-right: 4px; }
+ #dkeezizlrz .gt_column_spanner_outer:first-child { padding-left: 0; }
+ #dkeezizlrz .gt_column_spanner_outer:last-child { padding-right: 0; }
+ #dkeezizlrz .gt_column_spanner { border-bottom-style: solid; border-bottom-width: 0.5px; border-bottom-color: black; vertical-align: bottom; padding-top: 4px; padding-bottom: 4px; overflow-x: hidden; display: inline-block; width: 100%; }
+ #dkeezizlrz .gt_spanner_row { border-bottom-style: hidden; }
+ #dkeezizlrz .gt_group_heading { padding-top: 0px; padding-bottom: 0px; padding-left: 5px; padding-right: 5px; color: #333333; background-color: #FFFFFF; font-size: 0px; font-weight: initial; text-transform: inherit; border-top-style: solid; border-top-width: 0.5px; border-top-color: black; border-bottom-style: solid; border-bottom-width: 0.5px; border-bottom-color: black; border-left-style: none; border-left-width: 1px; border-left-color: white; border-right-style: none; border-right-width: 1px; border-right-color: white; vertical-align: middle; text-align: left; }
+ #dkeezizlrz .gt_empty_group_heading { padding: 0.5px; color: #333333; background-color: #FFFFFF; font-size: 0px; font-weight: initial; border-top-style: solid; border-top-width: 0.5px; border-top-color: black; border-bottom-style: solid; border-bottom-width: 0.5px; border-bottom-color: black; vertical-align: middle; }
+ #dkeezizlrz .gt_from_md> :first-child { margin-top: 0; }
+ #dkeezizlrz .gt_from_md> :last-child { margin-bottom: 0; }
+ #dkeezizlrz .gt_row { padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: none; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 0px; border-left-color: white; border-right-style: none; border-right-width: 0px; border-right-color: white; vertical-align: middle; overflow-x: hidden; }
+ #dkeezizlrz .gt_stub { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: hidden; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; }
+ #dkeezizlrz .gt_stub_row_group { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; vertical-align: top; }
+ #dkeezizlrz .gt_row_group_first td { border-top-width: 0.5px; }
+ #dkeezizlrz .gt_row_group_first th { border-top-width: 0.5px; }
+ #dkeezizlrz .gt_table_body { border-top-style: solid; border-top-width: 0.5px; border-top-color: black; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: black; }
+ #dkeezizlrz .gt_sourcenotes { color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; }
+ #dkeezizlrz .gt_sourcenote { font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; text-align: left; }
+ #dkeezizlrz .gt_left { text-align: left; }
+ #dkeezizlrz .gt_center { text-align: center; }
+ #dkeezizlrz .gt_right { text-align: right; font-variant-numeric: tabular-nums; }
+ #dkeezizlrz .gt_font_normal { font-weight: normal; }
+ #dkeezizlrz .gt_font_bold { font-weight: bold; }
+ #dkeezizlrz .gt_font_italic { font-style: italic; }
+ #dkeezizlrz .gt_super { font-size: 65%; }
+ #dkeezizlrz .gt_footnote_marks { font-size: 75%; vertical-align: 0.4em; position: initial; }
+ #dkeezizlrz .gt_asterisk { font-size: 100%; vertical-align: 0; }
+ 
 </style>
 
-<div id="T_c8f97" class="quarto-float quarto-figure quarto-figure-center anchored" data-quarto-postprocess="true">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="T_c8f97-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;4: Significance levels: * p &lt; 0.05, ** p &lt; 0.01, *** p &lt; 0.001. Format of coefficient cell: Coefficient (Std. Error)
-</figcaption>
-<div aria-describedby="T_c8f97-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<table id="T_c8f97" class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width: 33%">
 <col style="width: 33%">
 <col style="width: 33%">
 </colgroup>
 <thead>
-<tr class="header">
-<th id="T_c8f97_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th"></th>
-<th id="T_c8f97_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Y</th>
-<th id="T_c8f97_level0_col2" class="col_heading level0 col2" data-quarto-table-cell-role="th">Y2</th>
+<tr class="header gt_col_headings gt_spanner_row">
+<th rowspan="2" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col"></th>
+<th id="Y" class="gt_center gt_columns_top_border gt_column_spanner_outer" data-quarto-table-cell-role="th" scope="col"><span class="gt_column_spanner">Y</span></th>
+<th id="Y2" class="gt_center gt_columns_top_border gt_column_spanner_outer" data-quarto-table-cell-role="th" scope="col"><span class="gt_column_spanner">Y2</span></th>
 </tr>
-<tr class="odd">
-<th id="T_c8f97_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th"></th>
-<th id="T_c8f97_level1_col1" class="col_heading level1 col1" data-quarto-table-cell-role="th">(1)</th>
-<th id="T_c8f97_level1_col2" class="col_heading level1 col2" data-quarto-table-cell-role="th">(2)</th>
+<tr class="odd gt_col_headings">
+<th id="(1)" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">(1)</th>
+<th id="(2)" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">(2)</th>
 </tr>
 </thead>
-<tbody>
-<tr class="odd">
-<td id="T_c8f97_row0_col0" class="data row0 col0">X1</td>
-<td id="T_c8f97_row0_col1" class="data row0 col1">-0.919***<br>
+<tbody class="gt_table_body">
+<tr class="odd gt_group_heading_row">
+<td colspan="3" class="gt_group_heading" data-quarto-table-cell-role="th">coef</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left gt_stub" data-quarto-table-cell-role="th">X1</td>
+<td class="gt_row gt_center">-0.919***<br>
 (0.065)</td>
-<td id="T_c8f97_row0_col2" class="data row0 col2">-1.228***<br>
+<td class="gt_row gt_center">-1.228***<br>
 (0.195)</td>
 </tr>
+<tr class="odd gt_group_heading_row">
+<td colspan="3" class="gt_group_heading" data-quarto-table-cell-role="th">fe</td>
+</tr>
 <tr class="even">
-<td id="T_c8f97_row1_col0" class="data row1 col0">f2</td>
-<td id="T_c8f97_row1_col1" class="data row1 col1">x</td>
-<td id="T_c8f97_row1_col2" class="data row1 col2">x</td>
+<td class="gt_row gt_left gt_stub" data-quarto-table-cell-role="th">f2</td>
+<td class="gt_row gt_center">x</td>
+<td class="gt_row gt_center">x</td>
 </tr>
 <tr class="odd">
-<td id="T_c8f97_row2_col0" class="data row2 col0">f1</td>
-<td id="T_c8f97_row2_col1" class="data row2 col1">x</td>
-<td id="T_c8f97_row2_col2" class="data row2 col2">x</td>
+<td class="gt_row gt_left gt_stub" data-quarto-table-cell-role="th">f1</td>
+<td class="gt_row gt_center">x</td>
+<td class="gt_row gt_center">x</td>
 </tr>
-<tr class="even">
-<td id="T_c8f97_row3_col0" class="data row3 col0">Observations</td>
-<td id="T_c8f97_row3_col1" class="data row3 col1">997</td>
-<td id="T_c8f97_row3_col2" class="data row3 col2">998</td>
+<tr class="even gt_group_heading_row">
+<td colspan="3" class="gt_group_heading" data-quarto-table-cell-role="th">stats</td>
 </tr>
 <tr class="odd">
-<td id="T_c8f97_row4_col0" class="data row4 col0">S.E. type</td>
-<td id="T_c8f97_row4_col1" class="data row4 col1">by: f1</td>
-<td id="T_c8f97_row4_col2" class="data row4 col2">by: f1</td>
+<td class="gt_row gt_left gt_stub" data-quarto-table-cell-role="th">Observations</td>
+<td class="gt_row gt_center">997</td>
+<td class="gt_row gt_center">998</td>
 </tr>
 <tr class="even">
-<td id="T_c8f97_row5_col0" class="data row5 col0">R<sup>2</sup></td>
-<td id="T_c8f97_row5_col1" class="data row5 col1">0.609</td>
-<td id="T_c8f97_row5_col2" class="data row5 col2">0.168</td>
+<td class="gt_row gt_left gt_stub" data-quarto-table-cell-role="th">S.E. type</td>
+<td class="gt_row gt_center">by: f1</td>
+<td class="gt_row gt_center">by: f1</td>
 </tr>
-</tbody>
+<tr class="odd">
+<td class="gt_row gt_left gt_stub" data-quarto-table-cell-role="th">R<sup>2</sup></td>
+<td class="gt_row gt_center">0.609</td>
+<td class="gt_row gt_center">0.168</td>
+</tr>
+</tbody><tfoot class="gt_sourcenotes">
+<tr class="odd">
+<td colspan="3" class="gt_sourcenote"></td>
+</tr>
+</tfoot>
+
 </table>
+
+
 </div>
-</figure>
-</div>
+        
 </div>
 </div>
 <p>It is possible to combine different multiple estimation operators:</p>
-<div id="fc5e5e2f" class="cell" data-execution_count="11">
+<div id="7d1341c2" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>fit <span class="op">=</span> pf.feols(<span class="st">"Y + Y2 ~ X1 | sw(f1, f2)"</span>, data)</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>pf.etable([fit.fetch_model(<span class="dv">0</span>),</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>        fit.fetch_model(<span class="dv">1</span>),</span>
@@ -1226,59 +1290,55 @@ Model:  Y~X1|f2
 Model:  Y2~X1|f2</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="11">
-<style type="text/css">
-#T_6a239 thead th {
-  text-align: center;
-}
-#T_6a239 thead tr:nth-child(1) th {
-  border-top: 2px solid black;
-}
-#T_6a239 thead tr:nth-child(1) th:nth-child(n+2) {
-  border-bottom: 0.5px solid black;
-}
-#T_6a239 tbody tr:nth-child(0) td {
-  background-color: #f0f0f0;
-}
-#T_6a239 tbody tr:nth-child(1) td {
-  border-top: 1px solid black;
-}
-#T_6a239 tbody tr:nth-child(1) td {
-  border-bottom: 1px solid black;
-}
-#T_6a239 tbody tr:nth-child(3) td {
-  border-bottom: 1px solid black;
-}
-#T_6a239 tbody tr:nth-child(6) td {
-  border-bottom: 2px solid black;
-}
-#T_6a239 tbody td {
-  background-color: #ffffff;
-}
-#T_6a239 tbody tr td:first-child {
-  background-color: #f0f0f0;
-  font-weight: bold;
-  text-align: left;
-}
-#T_6a239 caption {
-  caption-side: bottom;
-  font-size: 1em;
-  text-align: justify;
-}
-#T_6a239_row0_col0, #T_6a239_row1_col0, #T_6a239_row2_col0, #T_6a239_row3_col0, #T_6a239_row4_col0, #T_6a239_row5_col0 {
-  text-align: left;
-}
-#T_6a239_row0_col1, #T_6a239_row0_col2, #T_6a239_row0_col3, #T_6a239_row0_col4, #T_6a239_row1_col1, #T_6a239_row1_col2, #T_6a239_row1_col3, #T_6a239_row1_col4, #T_6a239_row2_col1, #T_6a239_row2_col2, #T_6a239_row2_col3, #T_6a239_row2_col4, #T_6a239_row3_col1, #T_6a239_row3_col2, #T_6a239_row3_col3, #T_6a239_row3_col4, #T_6a239_row4_col1, #T_6a239_row4_col2, #T_6a239_row4_col3, #T_6a239_row4_col4, #T_6a239_row5_col1, #T_6a239_row5_col2, #T_6a239_row5_col3, #T_6a239_row5_col4 {
-  text-align: center;
-}
+<div id="hajlbqtnnh" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>
+#hajlbqtnnh table {
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+        }
+
+#hajlbqtnnh thead, tbody, tfoot, tr, td, th { border-style: none; }
+ tr { background-color: transparent; }
+#hajlbqtnnh p { margin: 0; padding: 0; }
+ #hajlbqtnnh .gt_table { display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: hidden; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; }
+ #hajlbqtnnh .gt_caption { padding-top: 4px; padding-bottom: 4px; }
+ #hajlbqtnnh .gt_title { color: #333333; font-size: 125%; font-weight: initial; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; border-bottom-color: #FFFFFF; border-bottom-width: 0; }
+ #hajlbqtnnh .gt_subtitle { color: #333333; font-size: 85%; font-weight: initial; padding-top: 3px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; border-top-color: #FFFFFF; border-top-width: 0; }
+ #hajlbqtnnh .gt_heading { background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #hajlbqtnnh .gt_bottom_border { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #hajlbqtnnh .gt_col_headings { border-top-style: solid; border-top-width: 2px; border-top-color: black; border-bottom-style: solid; border-bottom-width: 0.5px; border-bottom-color: black; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #hajlbqtnnh .gt_col_heading { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 0px; border-left-color: white; border-right-style: none; border-right-width: 0px; border-right-color: white; vertical-align: bottom; padding-top: 4px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; }
+ #hajlbqtnnh .gt_column_spanner_outer { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; padding-top: 0; padding-bottom: 0; padding-left: 4px; padding-right: 4px; }
+ #hajlbqtnnh .gt_column_spanner_outer:first-child { padding-left: 0; }
+ #hajlbqtnnh .gt_column_spanner_outer:last-child { padding-right: 0; }
+ #hajlbqtnnh .gt_column_spanner { border-bottom-style: solid; border-bottom-width: 0.5px; border-bottom-color: black; vertical-align: bottom; padding-top: 4px; padding-bottom: 4px; overflow-x: hidden; display: inline-block; width: 100%; }
+ #hajlbqtnnh .gt_spanner_row { border-bottom-style: hidden; }
+ #hajlbqtnnh .gt_group_heading { padding-top: 0px; padding-bottom: 0px; padding-left: 5px; padding-right: 5px; color: #333333; background-color: #FFFFFF; font-size: 0px; font-weight: initial; text-transform: inherit; border-top-style: solid; border-top-width: 0.5px; border-top-color: black; border-bottom-style: solid; border-bottom-width: 0.5px; border-bottom-color: black; border-left-style: none; border-left-width: 1px; border-left-color: white; border-right-style: none; border-right-width: 1px; border-right-color: white; vertical-align: middle; text-align: left; }
+ #hajlbqtnnh .gt_empty_group_heading { padding: 0.5px; color: #333333; background-color: #FFFFFF; font-size: 0px; font-weight: initial; border-top-style: solid; border-top-width: 0.5px; border-top-color: black; border-bottom-style: solid; border-bottom-width: 0.5px; border-bottom-color: black; vertical-align: middle; }
+ #hajlbqtnnh .gt_from_md> :first-child { margin-top: 0; }
+ #hajlbqtnnh .gt_from_md> :last-child { margin-bottom: 0; }
+ #hajlbqtnnh .gt_row { padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: none; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 0px; border-left-color: white; border-right-style: none; border-right-width: 0px; border-right-color: white; vertical-align: middle; overflow-x: hidden; }
+ #hajlbqtnnh .gt_stub { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: hidden; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; }
+ #hajlbqtnnh .gt_stub_row_group { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; vertical-align: top; }
+ #hajlbqtnnh .gt_row_group_first td { border-top-width: 0.5px; }
+ #hajlbqtnnh .gt_row_group_first th { border-top-width: 0.5px; }
+ #hajlbqtnnh .gt_table_body { border-top-style: solid; border-top-width: 0.5px; border-top-color: black; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: black; }
+ #hajlbqtnnh .gt_sourcenotes { color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; }
+ #hajlbqtnnh .gt_sourcenote { font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; text-align: left; }
+ #hajlbqtnnh .gt_left { text-align: left; }
+ #hajlbqtnnh .gt_center { text-align: center; }
+ #hajlbqtnnh .gt_right { text-align: right; font-variant-numeric: tabular-nums; }
+ #hajlbqtnnh .gt_font_normal { font-weight: normal; }
+ #hajlbqtnnh .gt_font_bold { font-weight: bold; }
+ #hajlbqtnnh .gt_font_italic { font-style: italic; }
+ #hajlbqtnnh .gt_super { font-size: 65%; }
+ #hajlbqtnnh .gt_footnote_marks { font-size: 75%; vertical-align: 0.4em; position: initial; }
+ #hajlbqtnnh .gt_asterisk { font-size: 100%; vertical-align: 0; }
+ 
 </style>
 
-<div id="T_6a239" class="quarto-float quarto-figure quarto-figure-center anchored" data-quarto-postprocess="true">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="T_6a239-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;5: Significance levels: * p &lt; 0.05, ** p &lt; 0.01, *** p &lt; 0.001. Format of coefficient cell: Coefficient (Std. Error)
-</figcaption>
-<div aria-describedby="T_6a239-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<table id="T_6a239" class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width: 20%">
 <col style="width: 20%">
@@ -1287,78 +1347,92 @@ Table&nbsp;5: Significance levels: * p &lt; 0.05, ** p &lt; 0.01, *** p &lt; 0.0
 <col style="width: 20%">
 </colgroup>
 <thead>
-<tr class="header">
-<th id="T_6a239_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th"></th>
-<th id="T_6a239_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Y</th>
-<th id="T_6a239_level0_col2" class="col_heading level0 col2" data-quarto-table-cell-role="th">Y2</th>
-<th id="T_6a239_level0_col3" class="col_heading level0 col3" data-quarto-table-cell-role="th">Y</th>
-<th id="T_6a239_level0_col4" class="col_heading level0 col4" data-quarto-table-cell-role="th">Y2</th>
+<tr class="header gt_col_headings gt_spanner_row">
+<th rowspan="2" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col"></th>
+<th id="Y" class="gt_center gt_columns_top_border gt_column_spanner_outer" data-quarto-table-cell-role="th" scope="col"><span class="gt_column_spanner">Y</span></th>
+<th id="Y2" class="gt_center gt_columns_top_border gt_column_spanner_outer" data-quarto-table-cell-role="th" scope="col"><span class="gt_column_spanner">Y2</span></th>
+<th id="Y" class="gt_center gt_columns_top_border gt_column_spanner_outer" data-quarto-table-cell-role="th" scope="col"><span class="gt_column_spanner">Y</span></th>
+<th id="Y2" class="gt_center gt_columns_top_border gt_column_spanner_outer" data-quarto-table-cell-role="th" scope="col"><span class="gt_column_spanner">Y2</span></th>
 </tr>
-<tr class="odd">
-<th id="T_6a239_level1_col0" class="col_heading level1 col0" data-quarto-table-cell-role="th"></th>
-<th id="T_6a239_level1_col1" class="col_heading level1 col1" data-quarto-table-cell-role="th">(1)</th>
-<th id="T_6a239_level1_col2" class="col_heading level1 col2" data-quarto-table-cell-role="th">(2)</th>
-<th id="T_6a239_level1_col3" class="col_heading level1 col3" data-quarto-table-cell-role="th">(3)</th>
-<th id="T_6a239_level1_col4" class="col_heading level1 col4" data-quarto-table-cell-role="th">(4)</th>
+<tr class="odd gt_col_headings">
+<th id="(1)" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">(1)</th>
+<th id="(2)" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">(2)</th>
+<th id="(3)" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">(3)</th>
+<th id="(4)" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">(4)</th>
 </tr>
 </thead>
-<tbody>
-<tr class="odd">
-<td id="T_6a239_row0_col0" class="data row0 col0">X1</td>
-<td id="T_6a239_row0_col1" class="data row0 col1">-0.949***<br>
+<tbody class="gt_table_body">
+<tr class="odd gt_group_heading_row">
+<td colspan="5" class="gt_group_heading" data-quarto-table-cell-role="th">coef</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left gt_stub" data-quarto-table-cell-role="th">X1</td>
+<td class="gt_row gt_center">-0.949***<br>
 (0.069)</td>
-<td id="T_6a239_row0_col2" class="data row0 col2">-1.266***<br>
+<td class="gt_row gt_center">-1.266***<br>
 (0.176)</td>
-<td id="T_6a239_row0_col3" class="data row0 col3">-0.982***<br>
+<td class="gt_row gt_center">-0.982***<br>
 (0.081)</td>
-<td id="T_6a239_row0_col4" class="data row0 col4">-1.301***<br>
+<td class="gt_row gt_center">-1.301***<br>
 (0.205)</td>
 </tr>
+<tr class="odd gt_group_heading_row">
+<td colspan="5" class="gt_group_heading" data-quarto-table-cell-role="th">fe</td>
+</tr>
 <tr class="even">
-<td id="T_6a239_row1_col0" class="data row1 col0">f2</td>
-<td id="T_6a239_row1_col1" class="data row1 col1">-</td>
-<td id="T_6a239_row1_col2" class="data row1 col2">-</td>
-<td id="T_6a239_row1_col3" class="data row1 col3">x</td>
-<td id="T_6a239_row1_col4" class="data row1 col4">x</td>
+<td class="gt_row gt_left gt_stub" data-quarto-table-cell-role="th">f2</td>
+<td class="gt_row gt_center">-</td>
+<td class="gt_row gt_center">-</td>
+<td class="gt_row gt_center">x</td>
+<td class="gt_row gt_center">x</td>
 </tr>
 <tr class="odd">
-<td id="T_6a239_row2_col0" class="data row2 col0">f1</td>
-<td id="T_6a239_row2_col1" class="data row2 col1">x</td>
-<td id="T_6a239_row2_col2" class="data row2 col2">x</td>
-<td id="T_6a239_row2_col3" class="data row2 col3">-</td>
-<td id="T_6a239_row2_col4" class="data row2 col4">-</td>
+<td class="gt_row gt_left gt_stub" data-quarto-table-cell-role="th">f1</td>
+<td class="gt_row gt_center">x</td>
+<td class="gt_row gt_center">x</td>
+<td class="gt_row gt_center">-</td>
+<td class="gt_row gt_center">-</td>
 </tr>
-<tr class="even">
-<td id="T_6a239_row3_col0" class="data row3 col0">Observations</td>
-<td id="T_6a239_row3_col1" class="data row3 col1">997</td>
-<td id="T_6a239_row3_col2" class="data row3 col2">998</td>
-<td id="T_6a239_row3_col3" class="data row3 col3">998</td>
-<td id="T_6a239_row3_col4" class="data row3 col4">999</td>
+<tr class="even gt_group_heading_row">
+<td colspan="5" class="gt_group_heading" data-quarto-table-cell-role="th">stats</td>
 </tr>
 <tr class="odd">
-<td id="T_6a239_row4_col0" class="data row4 col0">S.E. type</td>
-<td id="T_6a239_row4_col1" class="data row4 col1">by: f1</td>
-<td id="T_6a239_row4_col2" class="data row4 col2">by: f1</td>
-<td id="T_6a239_row4_col3" class="data row4 col3">by: f2</td>
-<td id="T_6a239_row4_col4" class="data row4 col4">by: f2</td>
+<td class="gt_row gt_left gt_stub" data-quarto-table-cell-role="th">Observations</td>
+<td class="gt_row gt_center">997</td>
+<td class="gt_row gt_center">998</td>
+<td class="gt_row gt_center">998</td>
+<td class="gt_row gt_center">999</td>
 </tr>
 <tr class="even">
-<td id="T_6a239_row5_col0" class="data row5 col0">R<sup>2</sup></td>
-<td id="T_6a239_row5_col1" class="data row5 col1">0.437</td>
-<td id="T_6a239_row5_col2" class="data row5 col2">0.115</td>
-<td id="T_6a239_row5_col3" class="data row5 col3">0.302</td>
-<td id="T_6a239_row5_col4" class="data row5 col4">0.090</td>
+<td class="gt_row gt_left gt_stub" data-quarto-table-cell-role="th">S.E. type</td>
+<td class="gt_row gt_center">by: f1</td>
+<td class="gt_row gt_center">by: f1</td>
+<td class="gt_row gt_center">by: f2</td>
+<td class="gt_row gt_center">by: f2</td>
 </tr>
-</tbody>
+<tr class="odd">
+<td class="gt_row gt_left gt_stub" data-quarto-table-cell-role="th">R<sup>2</sup></td>
+<td class="gt_row gt_center">0.437</td>
+<td class="gt_row gt_center">0.115</td>
+<td class="gt_row gt_center">0.302</td>
+<td class="gt_row gt_center">0.090</td>
+</tr>
+</tbody><tfoot class="gt_sourcenotes">
+<tr class="odd">
+<td colspan="5" class="gt_sourcenote"></td>
+</tr>
+</tfoot>
+
 </table>
+
+
 </div>
-</figure>
-</div>
+        
 </div>
 </div>
 <p>In general, using muliple estimation syntax can improve the estimation time as covariates that are demeaned in one model and are used in another model do not need to be demeaned again: <code>feols()</code> implements a caching mechanism that stores the demeaned covariates.</p>
 <p>Besides OLS, <code>feols()</code> also supports IV estimation via three part formulas:</p>
-<div id="e827ebb1" class="cell" data-execution_count="12">
+<div id="2160ba11" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>fit <span class="op">=</span> pf.feols(<span class="st">"Y ~  X2 | f1 + f2 | X1 ~ Z1"</span>, data)</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>fit.tidy()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="12">
@@ -1412,7 +1486,7 @@ Table&nbsp;5: Significance levels: * p &lt; 0.05, ** p &lt; 0.01, *** p &lt; 0.0
 </div>
 </div>
 <p>Here, <code>X1</code> is the endogenous variable and <code>Z1</code> is the instrument. <code>f1</code> and <code>f2</code> are the fixed effects, as before. To estimate IV models without fixed effects, simply omit the fixed effects part of the formula:</p>
-<div id="eb7ccb7c" class="cell" data-execution_count="13">
+<div id="8f1454c0" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>fit <span class="op">=</span> pf.feols(<span class="st">"Y ~  X2 | X1 ~ Z1"</span>, data)</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>fit.tidy()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="13">
@@ -1476,7 +1550,7 @@ Table&nbsp;5: Significance levels: * p &lt; 0.05, ** p &lt; 0.01, *** p &lt; 0.0
 </div>
 <p>Last, <code>feols()</code> supports interaction of variables via the <code>i()</code> syntax. Documentation on this is tba.</p>
 <p>After fitting a model via <code>feols()</code>, you can use the <code>predict()</code> method to get the predicted values:</p>
-<div id="8f501f24" class="cell" data-execution_count="14">
+<div id="da2ed661" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>fit <span class="op">=</span> pf.feols(<span class="st">"Y ~ X1 + X2 | f1 + f2"</span>, data)</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>fit.predict()[<span class="dv">0</span>:<span class="dv">5</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="14">
@@ -1484,7 +1558,7 @@ Table&nbsp;5: Significance levels: * p &lt; 0.05, ** p &lt; 0.01, *** p &lt; 0.0
 </div>
 </div>
 <p>The <code>predict()</code> method also supports a <code>newdata</code> argument to predict on new data, which returns a numpy array of the predicted values:</p>
-<div id="fcd460f3" class="cell" data-execution_count="15">
+<div id="f921e4c4" class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>fit <span class="op">=</span> pf.feols(<span class="st">"Y ~ X1 + X2 | f1 + f2"</span>, data)</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>fit.predict(newdata<span class="op">=</span>data)[<span class="dv">0</span>:<span class="dv">5</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="15">
@@ -1492,11 +1566,11 @@ Table&nbsp;5: Significance levels: * p &lt; 0.05, ** p &lt; 0.01, *** p &lt; 0.0
 </div>
 </div>
 <p>Last, you can plot the results of a model via the <code>coefplot()</code> method:</p>
-<div id="602f912e" class="cell" data-execution_count="16">
+<div id="6f9423a9" class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>fit <span class="op">=</span> pf.feols(<span class="st">"Y ~ X1 + X2 | f1 + f2"</span>, data)</span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>fit.coefplot()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="16">
-   <div id="Rc12eA"></div>
+   <div id="nwxbGh"></div>
    <script type="text/javascript" data-lets-plot-script="plot">
        (function() {
            var plotSpec={
@@ -1607,7 +1681,7 @@ Table&nbsp;5: Significance levels: * p &lt; 0.05, ** p &lt; 0.01, *** p &lt; 0.0
 }],
 "metainfo_list":[]
 };
-           var plotContainer = document.getElementById("Rc12eA");
+           var plotContainer = document.getElementById("nwxbGh");
            window.letsPlotCall(function() {{
                LetsPlot.buildPlotFromProcessedSpecs(plotSpec, -1, -1, plotContainer);
            }});
@@ -1616,7 +1690,7 @@ Table&nbsp;5: Significance levels: * p &lt; 0.05, ** p &lt; 0.01, *** p &lt; 0.0
 </div>
 </div>
 <p>Objects of type <code>Feols</code> support a range of other methods to conduct inference. For example, you can run a wild (cluster) bootstrap via the <code>wildboottest()</code> method:</p>
-<div id="a47c6c0f" class="cell" data-execution_count="17">
+<div id="e5b88049" class="cell" data-execution_count="17">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>fit.wildboottest(param <span class="op">=</span> <span class="st">"X1"</span>, reps<span class="op">=</span><span class="dv">1000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="17">
 <pre><code>param                             X1
@@ -1630,7 +1704,7 @@ dtype: object</code></pre>
 </div>
 <p>would run a wild bootstrap test for the coefficient of <code>X1</code> with 1000 bootstrap repetitions.</p>
 <p>For a wild cluster bootstrap, you can specify the cluster variable via the <code>cluster</code> argument:</p>
-<div id="c079c9f3" class="cell" data-execution_count="18">
+<div id="2ee43c8d" class="cell" data-execution_count="18">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>fit.wildboottest(param <span class="op">=</span> <span class="st">"X1"</span>, reps<span class="op">=</span><span class="dv">1000</span>, cluster<span class="op">=</span><span class="st">"group_id"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="18">
 <pre><code>param                              X1
@@ -1643,7 +1717,7 @@ dtype: object</code></pre>
 </div>
 </div>
 <p>The <code>ritest()</code> method can be used to conduct randomization inference:</p>
-<div id="5bdd8e3d" class="cell" data-execution_count="19">
+<div id="04edb52e" class="cell" data-execution_count="19">
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>fit.ritest(resampvar <span class="op">=</span> <span class="st">"X1"</span>, reps<span class="op">=</span><span class="dv">1000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="19">
 <pre><code>H0                                      X1=0
@@ -1657,14 +1731,14 @@ dtype: object</code></pre>
 </div>
 </div>
 <p>Last, you can compute the cluster causal variance estimator by Athey et al by using the <code>ccv()</code> method:</p>
-<div id="cdd06771" class="cell" data-execution_count="20">
+<div id="b683e92f" class="cell" data-execution_count="20">
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">1234</span>)</span>
 <span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>data[<span class="st">"D"</span>] <span class="op">=</span> rng.choice([<span class="dv">0</span>, <span class="dv">1</span>], size <span class="op">=</span> data.shape[<span class="dv">0</span>])</span>
 <span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>fit_D <span class="op">=</span> pf.feols(<span class="st">"Y ~ D"</span>, data <span class="op">=</span> data)</span>
 <span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>fit_D.ccv(treatment <span class="op">=</span> <span class="st">"D"</span>, cluster <span class="op">=</span> <span class="st">"group_id"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>/home/runner/work/pyfixest/pyfixest/pyfixest/estimation/feols_.py:1250: UserWarning:
+<pre><code>/home/runner/work/pyfixest/pyfixest/pyfixest/estimation/feols_.py:1364: UserWarning:
 
 The initial model was not clustered. CRV1 inference is computed and stored in the model object.
 </code></pre>
@@ -1689,11 +1763,11 @@ The initial model was not clustered. CRV1 inference is computed and stored in th
 <tr class="odd">
 <td data-quarto-table-cell-role="th">CCV</td>
 <td>0.016087657906364183</td>
-<td>0.25878</td>
-<td>0.062167</td>
-<td>0.951115</td>
-<td>-0.527589</td>
-<td>0.559764</td>
+<td>0.297211</td>
+<td>0.054129</td>
+<td>0.957429</td>
+<td>-0.60833</td>
+<td>0.640505</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">CRV1</td>
